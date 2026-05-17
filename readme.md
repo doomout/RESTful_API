@@ -3,6 +3,7 @@
 ##  1. API 서버와 REST
 ### 01. API 서버와 웹 MVC
 - [서버의 역사](./docs/01-web-evolution-and-server-role.md)
+- [REST 원칙](./docs/02-rest-principles.md)
 ### 02. REST 방식 연습하기
 ### 03. Spring Data JPA
 ### 04. 서비스 계층과 컨트롤러 계층
