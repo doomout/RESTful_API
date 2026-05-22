@@ -6,6 +6,7 @@
 - [02.REST 원칙](./docs/02-rest-principles.md)
 - [03.API 설계 기초](./docs/03-api-design-basics.md)
 ### 02. REST 방식 연습하기
+- [04.REST 설명](./docs/04-spring-di-and-annotations.md)
 ### 03. Spring Data JPA
 ### 04. 서비스 계층과 컨트롤러 계층
 
