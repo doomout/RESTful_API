@@ -1,5 +1,13 @@
 # RESTful API 서버 구현
 
+## 0. 프로젝트 설정
+- 스프링 부트 3.5
+- 그레이들
+- MariaDB 12 (port 3000)
+- vscode
+- java 21
+- postman
+
 ##  1. API 서버와 REST
 ### 01. API 서버와 웹 MVC
 - [01.서버의 역사](./docs/01-web-evolution-and-server-role.md)
