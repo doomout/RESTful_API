@@ -16,6 +16,7 @@
 ### 02. REST 방식 연습하기
 - [04.REST 설명](./docs/04-spring-di-and-annotations.md)
 ### 03. Spring Data JPA
+- [05.JPA](./docs/05-jpa.md)
 ### 04. 서비스 계층과 컨트롤러 계층
 
 ## 2. JWT 인증
