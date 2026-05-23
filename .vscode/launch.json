@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "KhgApplication",
+            "request": "launch",
+            "mainClass": "com.todo.khg.KhgApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-KhgApplication<khg-ex1>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
