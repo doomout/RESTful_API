@@ -81,7 +81,21 @@ public class TodoRepositoryTests {
     @Transactional // 트랜잭션을 적용하여 영속성 컨텍스트 유지
     @Commit // 테스트 완료 후 트랜잭션 커밋하여 변경 사항 데이터베이스에 반영
     public void testDelete() {
-        Long mno = 58L; // 삭제할 데이터의 MNO
+        Long mno = 44L; // 삭제할 데이터의 MNO
+
+        Optional<TodoEntity> result = todoRepository.findById(mno);
+        
+        result.ifPresent(todoEntity -> {
+            todoRepository.delete(todoEntity);
+            System.out.println("삭제한 번호: " + mno);
+        });
+    }
+
+    @Test
+    @Transactional // 트랜잭션을 적용하여 영속성 컨텍스트 유지
+    @Commit // 테스트 완료 후 트랜잭션 커밋하여 변경 사항 데이터베이스에 반영
+    public void testDeleteById() {
+        Long mno = 30L; // 삭제할 데이터의 MNO
         
         todoRepository.deleteById(mno);
         System.out.println("삭제한 번호: " + mno);
