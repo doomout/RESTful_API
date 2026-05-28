@@ -11,6 +11,7 @@ import com.todo.khg.TodoRepository.TodoRepository;
 import com.todo.khg.entity.TodoEntity;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -42,5 +43,16 @@ public class TodoRepositoryTests {
             todoRepository.save(todoEntity);
             System.out.println("New TodoEntity MNO: " + todoEntity.getMno());
         }
+    }
+
+    @Test
+    public void testRead() {
+        Long mno = 58L; // 읽어올 데이터의 MNO
+        
+        Optional<TodoEntity> result = todoRepository.findById(mno);
+        
+        result.ifPresent(todoEntity -> {
+            System.out.println(todoEntity);
+        });
     }
 }
