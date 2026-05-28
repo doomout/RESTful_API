@@ -23,4 +23,15 @@ public class TodoEntity {
     private String writer;
 
     private LocalDate dueDate;
+
+    // 변경 메서드들 - 엔티티의 상태를 변경할 때 사용
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+    public void changeWriter(String writer) {
+        this.writer = writer;
+    }
+    public void changeDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 }
