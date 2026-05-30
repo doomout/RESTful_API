@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +103,21 @@ public class TodoRepositoryTests {
         
         todoRepository.deleteById(mno);
         System.out.println("삭제한 번호: " + mno);
+    }
+
+    @Test
+    public void testPaging() { // 페이징 처리 테스트
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+
+        Page<TodoEntity> result = todoRepository.findAll(pageable); // 페이징 처리된 결과를 Page 객체로 반환
+
+        System.out.println(result.getTotalPages()); // 전체 페이지 수
+        System.out.println(result.getTotalElements()); // 전체 데이터 수
+
+        java.util.List<TodoEntity> todoList = result.getContent(); // 현재 페이지에 해당하는 데이터 리스트
+
+        todoList.forEach(todoEntity -> { // 람다식으로 각 엔티티 객체를 출력
+            System.out.println(todoEntity);
+        });
     }
 }
