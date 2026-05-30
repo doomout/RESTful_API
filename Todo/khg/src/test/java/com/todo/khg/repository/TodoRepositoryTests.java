@@ -120,4 +120,13 @@ public class TodoRepositoryTests {
             System.out.println(todoEntity);
         });
     }
+
+    @Test
+    public void testListAll() { // listAll 메서드 테스트
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+
+        Page<TodoEntity> result = todoRepository.listAll(pageable); // listAll 메서드를 호출하여 페이징 처리된 결과를 Page 객체로 반환
+
+        System.out.println(result.getContent());  // 현재 페이지에 해당하는 데이터 리스트를 출력
+    }
 }
