@@ -1,4 +1,4 @@
-package com.todo.khg.TodoRepository;
+package com.todo.khg.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

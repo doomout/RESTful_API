@@ -7,13 +7,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.todo.khg.TodoRepository.TodoRepository;
 import com.todo.khg.entity.TodoEntity;
+import com.todo.khg.repository.TodoRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -123,6 +124,7 @@ public class TodoRepositoryTests {
 
     @Test
     public void testListAll() { // listAll 메서드 테스트
+        
         Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
 
         Page<TodoEntity> result = todoRepository.listAll(pageable); // listAll 메서드를 호출하여 페이징 처리된 결과를 Page 객체로 반환
