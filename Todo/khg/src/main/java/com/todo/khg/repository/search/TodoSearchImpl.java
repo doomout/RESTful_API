@@ -16,6 +16,8 @@ public class TodoSearchImpl extends QuerydslRepositorySupport implements TodoSea
 
     @Override
     public Page<TodoEntity> search1(Pageable pageable) {
+        log.info("search1............");
+        QTodoEntity todo = QTodoEntity.todoEntity;
         // 결과 반환
         return null;
     }

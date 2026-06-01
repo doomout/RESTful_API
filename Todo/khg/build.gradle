@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		querydslVersion = '5.0.0'
+		queryDslVersion = '5.1.0'
 	}
 }
 
