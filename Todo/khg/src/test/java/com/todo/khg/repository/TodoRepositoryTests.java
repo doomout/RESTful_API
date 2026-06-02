@@ -13,6 +13,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.todo.khg.dto.TodoDTO;
 import com.todo.khg.entity.TodoEntity;
 import com.todo.khg.repository.TodoRepository;
 
@@ -145,6 +146,15 @@ public class TodoRepositoryTests {
         java.util.List<TodoEntity> todoList = result.getContent(); // 현재 페이지에 해당하는 데이터 리스트
         todoList.forEach(todoEntity -> {
             System.out.println(todoEntity);
+        });
+    }
+
+    @Test
+    public void testGetTodoDTO() {
+        Long mno = 20L;
+        Optional<TodoDTO> result = todoRepository.getDTO(mno); // getDTO 메서드를 호출하여 DTO 객체를 Optional로 반환
+        result.ifPresent(todoDTO -> { // Optional에서 DTO 객체가 존재하는 경우에만 출력
+            System.out.println(todoDTO);
         });
     }
 }
