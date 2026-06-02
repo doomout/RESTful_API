@@ -5,7 +5,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
+import com.todo.khg.dto.TodoDTO;
 import com.todo.khg.entity.QTodoEntity;
 import com.todo.khg.entity.TodoEntity;
 
@@ -36,5 +38,32 @@ public class TodoSearchImpl extends QuerydslRepositorySupport implements TodoSea
         
         // 결과 반환
         return new PageImpl<>(entityList, pageable, count);
+    }
+
+    @Override
+    public Page<TodoDTO> searchDTO(Pageable pageable) {
+        // Querydsl을 사용하여 검색 조건을 구성
+        QTodoEntity todoEntity = QTodoEntity.todoEntity;
+
+        // 검색 조건 예시: 모든 TodoEntity를 조회하는 조건
+        JPQLQuery<TodoEntity> query = from(todoEntity);
+
+        // 검색 조건 예시: 모든 TodoEntity를 조회하는 조건
+        query.where(todoEntity.mno.gt(0L));
+
+        // 페이징 처리
+        getQuerydsl().applyPagination(pageable, query);
+
+        // 검색 결과를 DTO로 변환하여 리스트로 가져오고, 전체 개수를 계산
+        JPQLQuery<TodoDTO> dtoQuery = query.select(Projections.constructor(TodoDTO.class, todoEntity));
+        
+        // DTO 리스트와 전체 개수 계산
+        java.util.List<TodoDTO> dtoList = dtoQuery.fetch();
+
+        // 전체 개수 계산
+        long count = dtoQuery.fetchCount();
+        
+        // 결과 반환
+        return new PageImpl<>(dtoList, pageable, count);
     }
 }
