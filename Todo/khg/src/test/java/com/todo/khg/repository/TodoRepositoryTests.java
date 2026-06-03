@@ -157,4 +157,21 @@ public class TodoRepositoryTests {
             System.out.println(todoDTO);
         });
     }
+
+    @Test
+    public void testSearchDTO() { // searchDTO 메서드 테스트
+        
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+
+        Page<TodoDTO> result = todoRepository.searchDTO(pageable); // searchDTO 메서드를 호출하여 페이징 처리된 결과를 Page 객체로 반환
+
+        System.out.println(result.getTotalPages()); // 전체 페이지 수
+        System.out.println(result.getTotalElements()); // 전체 데이터 수
+
+        java.util.List<TodoDTO> todoList = result.getContent(); // 현재 페이지에 해당하는 데이터 리스트
+        
+        todoList.forEach(todoDTO -> {
+            System.out.println(todoDTO);
+        });
+    }
 }
