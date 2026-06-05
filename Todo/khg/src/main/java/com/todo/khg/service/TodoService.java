@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.todo.khg.dto.TodoDTO;
+import com.todo.khg.entity.TodoEntity;
 import com.todo.khg.repository.TodoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,12 @@ public class TodoService {
 
      public TodoDTO register(TodoDTO todoDTO) {
         // DTO 를 엔티티 객체로 변환
-        // TodoRepository 를 이용하여 저장
-        // DTO에 저장된 번호를 지정해서 반환
+        TodoEntity todoEntity = todoDTO.toEntity();
         
-        return null;
+        // TodoRepository 를 이용하여 저장
+        todoRepository.save(todoEntity);
+
+        // DTO에 저장된 번호를 지정해서 반환
+        return new TodoDTO(todoEntity);
      }
 }
