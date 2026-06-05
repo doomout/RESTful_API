@@ -15,10 +15,21 @@ public class TodoDTO {
     private String writer;
     private LocalDate dueDate;
 
-    public TodoDTO(TodoEntity entity) {
-        this.mno = entity.getMno();
-        this.title = entity.getTitle();
-        this.writer = entity.getWriter();
-        this.dueDate = entity.getDueDate();
+    // 엔티티 객체 -> DTO 객체로 변환하는 생성자
+    public TodoDTO(TodoEntity todoEntity) {
+        this.mno = todoEntity.getMno();
+        this.title = todoEntity.getTitle();
+        this.writer = todoEntity.getWriter();
+        this.dueDate = todoEntity.getDueDate();
+    }
+
+    // DTO 객체 -> 엔티티 객체로 변환하는 메서드
+    public TodoEntity toEntity() {
+        return TodoEntity.builder()
+                .mno(mno)
+                .title(title)
+                .writer(writer)
+                .dueDate(dueDate)
+                .build();
     }
 }
