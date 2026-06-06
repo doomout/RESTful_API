@@ -27,5 +27,12 @@ public class TodoServieTests {
         // 결과 출력
         System.out.println("Registered Todo: " + resultDTO);
     }
-    
+
+    @Test
+    public void testRead() { // todoService의 read 메서드 테스트
+        Long mno = 102L; // 없는 번호로 테스트
+
+        TodoDTO todoDTO = todoService.read(mno);
+        System.out.println("Read Todo: " + todoDTO);
+     }
 }
