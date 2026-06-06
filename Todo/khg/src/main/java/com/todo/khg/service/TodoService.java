@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.todo.khg.dto.TodoDTO;
 import com.todo.khg.entity.TodoEntity;
+import com.todo.khg.exception.EntityNotFoundException;
 import com.todo.khg.repository.TodoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,9 @@ public class TodoService {
      // 번호를 이용하여 TodoDTO 객체를 반환하는 메서드
      public TodoDTO read(Long mno) {
          Optional<TodoDTO> result = todoRepository.getDTO(mno);
-         TodoDTO todoDTO = result.orElseThrow();
+         TodoDTO todoDTO = result.orElseThrow(
+            () -> new EntityNotFoundException(mno + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
+         );
 
          return todoDTO;
      }
