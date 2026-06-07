@@ -34,13 +34,29 @@ public class TodoServieTests {
 
         TodoDTO todoDTO = todoService.read(mno);
         System.out.println("Read Todo: " + todoDTO);
-     }
+    }
 
-     @Test
-     public void testRemove() { // todoService의 remove 메서드 테스트
+    @Test
+    public void testRemove() { // todoService의 remove 메서드 테스트
         Long mno = 50L; 
 
         todoService.remove(mno);
         System.out.println("Removed Todo with mno: " + mno);
-     }
+    }
+
+    @Test
+    public void testModify() { // todoService의 modify 메서드 테스트
+        // TodoDTO 객체 생성
+        TodoDTO todoDTO = new TodoDTO();
+        todoDTO.setMno(20L); 
+        todoDTO.setTitle("수정된 제목");
+        todoDTO.setWriter("수정된 작성자");
+        todoDTO.setDueDate(LocalDate.now());
+
+        // TodoService의 modify 메서드 호출
+        todoService.modify(todoDTO);
+
+        // 결과 출력
+        System.out.println("수정된 Todo: " + todoDTO);
+    }
 }
