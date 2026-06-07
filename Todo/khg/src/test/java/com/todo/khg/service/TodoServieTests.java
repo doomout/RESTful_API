@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
+import com.todo.khg.dto.PageRequestDTO;
 import com.todo.khg.dto.TodoDTO;
 
 @SpringBootTest
@@ -58,5 +60,20 @@ public class TodoServieTests {
 
         // 결과 출력
         System.out.println("수정된 Todo: " + todoDTO);
+    }
+
+    @Test
+    public void testlist() {
+        // page 1, size 10
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        
+        // TodoService의 getList 메서드 호출
+        Page<TodoDTO> result = todoService.getList(pageRequestDTO);
+
+        System.out.println("이전 페이지: " + result.previousPageable());
+        System.out.println("다음 페이지: " + result.nextPageable());
+        System.out.println("총 페이지 수: " + result.getTotalElements());
+
+        result.getContent().forEach(todoDTO -> System.out.println(todoDTO));
     }
 }
