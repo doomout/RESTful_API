@@ -30,9 +30,17 @@ public class TodoServieTests {
 
     @Test
     public void testRead() { // todoService의 read 메서드 테스트
-        Long mno = 102L; // 없는 번호로 테스트
+        Long mno = 20L; 
 
         TodoDTO todoDTO = todoService.read(mno);
         System.out.println("Read Todo: " + todoDTO);
+     }
+
+     @Test
+     public void testRemove() { // todoService의 remove 메서드 테스트
+        Long mno = 50L; 
+
+        todoService.remove(mno);
+        System.out.println("Removed Todo with mno: " + mno);
      }
 }
