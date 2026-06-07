@@ -19,38 +19,55 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class TodoService {
-    private final TodoRepository todoRepository;
+   private final TodoRepository todoRepository;
 
-    // TodoDTO 객체를 이용하여 TodoEntity 객체로 변환한 후 저장하는 메서드
-     public TodoDTO register(TodoDTO todoDTO) {
-        // DTO 를 엔티티 객체로 변환
-        TodoEntity todoEntity = todoDTO.toEntity();
-        
-        // TodoRepository 를 이용하여 저장
-        todoRepository.save(todoEntity);
+   // TodoDTO 객체를 이용하여 TodoEntity 객체로 변환한 후 저장하는 메서드
+   public TodoDTO register(TodoDTO todoDTO) {
+      // DTO 를 엔티티 객체로 변환
+      TodoEntity todoEntity = todoDTO.toEntity();
+      
+      // TodoRepository 를 이용하여 저장
+      todoRepository.save(todoEntity);
 
-        // DTO에 저장된 번호를 지정해서 반환
-        return new TodoDTO(todoEntity);
-     }
+      // DTO에 저장된 번호를 지정해서 반환
+      return new TodoDTO(todoEntity);
+   }
 
-     // 번호를 이용하여 TodoDTO 객체를 반환하는 메서드
-     public TodoDTO read(Long mno) {
+   // 번호를 이용하여 TodoDTO 객체를 반환하는 메서드
+   public TodoDTO read(Long mno) {
          Optional<TodoDTO> result = todoRepository.getDTO(mno);
          TodoDTO todoDTO = result.orElseThrow(
             () -> new EntityNotFoundException(mno + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
          );
 
          return todoDTO;
-     }
+   }
 
-     // 번호를 이용하여 TodoEntity 객체를 삭제하는 메서드
-      public void remove(Long mno) {
-         Optional<TodoEntity> result = todoRepository.findById(mno);
-         
-         TodoEntity todoEntity = result.orElseThrow(
-            () -> new EntityNotFoundException(mno + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
-         );
+   // 번호를 이용하여 TodoEntity 객체를 삭제하는 메서드
+   public void remove(Long mno) {
+      Optional<TodoEntity> result = todoRepository.findById(mno);
+      
+      TodoEntity todoEntity = result.orElseThrow(
+         () -> new EntityNotFoundException(mno + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
+      );
 
-         todoRepository.delete(todoEntity);
-      }
+      todoRepository.delete(todoEntity);
+   }
+
+   // 번호를 이용하여 TodoEntity 객체를 수정하는 메서드
+   public TodoDTO modify(TodoDTO todoDTO) {
+      Optional<TodoEntity> result = todoRepository.findById(todoDTO.getMno());
+      
+      TodoEntity todoEntity = result.orElseThrow(
+         () -> new EntityNotFoundException(todoDTO.getMno() + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
+      );
+
+      // 수정할 내용 반영
+      todoEntity.changeTitle(todoDTO.getTitle());
+      todoEntity.changeWriter(todoDTO.getWriter());
+      todoEntity.changeDueDate(todoDTO.getDueDate());
+
+      // 변경된 엔티티 객체 저장
+      return new TodoDTO(todoEntity);
+   }
 }
