@@ -3,9 +3,13 @@ package com.todo.khg.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.todo.khg.dto.PageRequestDTO;
 import com.todo.khg.dto.TodoDTO;
 import com.todo.khg.entity.TodoEntity;
 import com.todo.khg.exception.EntityNotFoundException;
@@ -69,5 +73,13 @@ public class TodoService {
 
       // 변경된 엔티티 객체 저장
       return new TodoDTO(todoEntity);
+   }
+
+   // PageRequestDTO 객체를 이용하여 TodoDTO 객체의 페이지 목록을 반환하는 메서드
+   public Page<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
+      Sort sort = Sort.by("mno").descending(); // 번호(mno)를 기준으로 내림차순 정렬
+      Pageable pageable = pageRequestDTO.getPageable(sort); // PageRequestDTO 객체에서 Pageable 객체를 생성
+      
+      return todoRepository.searchDTO(pageable); // TodoRepository의 searchDTO 메서드를 호출하여 페이지 목록을 반환
    }
 }
