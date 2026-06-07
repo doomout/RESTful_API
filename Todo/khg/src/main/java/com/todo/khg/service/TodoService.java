@@ -42,4 +42,15 @@ public class TodoService {
 
          return todoDTO;
      }
+
+     // 번호를 이용하여 TodoEntity 객체를 삭제하는 메서드
+      public void remove(Long mno) {
+         Optional<TodoEntity> result = todoRepository.findById(mno);
+         
+         TodoEntity todoEntity = result.orElseThrow(
+            () -> new EntityNotFoundException(mno + "번 번호의 Todo가 존재하지 않습니다.") // 예외  처리 추가
+         );
+
+         todoRepository.delete(todoEntity);
+      }
 }
