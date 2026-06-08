@@ -1,6 +1,7 @@
 package com.todo.khg.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class TodoController {
     private final TodoService todoService;
 
     @PostMapping("")
-    public ResponseEntity<TodoDTO> register(@RequestBody TodoDTO todoDTO) {
+    public ResponseEntity<TodoDTO> register(@RequestBody @Validated TodoDTO todoDTO) { //  @Validated 어노테이션을 사용하여 유효성 검사를 수행
         log.info("register...............");
         log.info(todoDTO);
 
