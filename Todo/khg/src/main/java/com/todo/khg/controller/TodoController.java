@@ -1,8 +1,12 @@
 package com.todo.khg.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todo.khg.dto.TodoDTO;
 import com.todo.khg.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,4 +18,13 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TodoController {
     private final TodoService todoService;
+
+    @PostMapping("")
+    public ResponseEntity<TodoDTO> register(@RequestBody TodoDTO todoDTO) {
+        log.info("register...............");
+        log.info(todoDTO);
+
+        //return ResponseEntity.ok(todoService.register(todoDTO)); // 등록된 TodoDTO 객체를 반환
+        return null;
+    }
 }
