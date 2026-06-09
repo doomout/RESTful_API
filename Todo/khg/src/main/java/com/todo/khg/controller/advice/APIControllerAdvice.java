@@ -27,6 +27,14 @@ public class APIControllerAdvice { // API 컨트롤러에서 발생하는 예외
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class) // 엔티티를 찾을 수 없을 때 발생하는 예외를 처리하는 메서드
+    public ResponseEntity<?> handleEntityNotFound(EntityNotFoundException exception) { 
+        Map<String, String> errors = Map.of("message", "Entity Not Found");
+
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class) // 매개변수의 유효성 검사가 실패할 때 발생하는 예외를 처리하는 메서드
     public ResponseEntity<?> handleArgsException(MethodArgumentNotValidException exception) {
         Map<String, Object> errors = new HashMap<>();
