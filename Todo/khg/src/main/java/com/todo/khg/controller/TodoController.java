@@ -12,6 +12,10 @@ import com.todo.khg.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v1/todos")
@@ -30,4 +34,14 @@ public class TodoController {
         //return ResponseEntity.ok(todoService.register(todoDTO)); // 등록된 TodoDTO 객체를 반환
         return null;
     }
+
+    @GetMapping("/{mno}")
+    public ResponseEntity<TodoDTO> read(@PathVariable("mno") Long mno) { // @PathVariable 어노테이션을 사용하여 URL 경로에서 mno 값을 추출
+        log.info("read...............");
+        log.info(mno);
+
+
+        return ResponseEntity.ok(todoService.read(mno)); // 해당 번호의 TodoDTO 객체를 반환
+    }
+    
 }
