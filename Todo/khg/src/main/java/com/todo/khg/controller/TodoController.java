@@ -25,6 +25,8 @@ public class TodoController {
         log.info("register...............");
         log.info(todoDTO);
 
+        todoDTO.setMno(null); // 번호는 자동으로 생성되도록 null로 설정
+
         //return ResponseEntity.ok(todoService.register(todoDTO)); // 등록된 TodoDTO 객체를 반환
         return null;
     }
