@@ -1,5 +1,6 @@
 package com.todo.khg.controller;
 
+import com.todo.khg.controller.advice.APIControllerAdvice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -44,4 +47,17 @@ public class TodoController {
         return ResponseEntity.ok(todoService.read(mno)); // 해당 번호의 TodoDTO 객체를 반환
     }
     
+    @PutMapping("/{mno}") 
+    public ResponseEntity<TodoDTO> modify(@PathVariable("mno") Long mno, @RequestBody TodoDTO todoDTO) { 
+        log.info("modify...............");
+        log.info(mno);
+        log.info(todoDTO);
+
+        // DTO 에 번호를 저장한다.
+        todoDTO.setMno(mno);
+
+        TodoDTO modifiedTodoDTO = todoService.modify(todoDTO);
+
+        return ResponseEntity.ok(modifiedTodoDTO); // 수정된 TodoDTO 객체를 반환
+    }
 }
