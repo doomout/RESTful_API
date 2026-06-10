@@ -1,6 +1,7 @@
 package com.todo.khg.controller;
 
-import com.todo.khg.controller.advice.APIControllerAdvice;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +14,11 @@ import com.todo.khg.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
-
-
 
 @RestController
 @RequestMapping("/api/v1/todos")
@@ -59,5 +59,18 @@ public class TodoController {
         TodoDTO modifiedTodoDTO = todoService.modify(todoDTO);
 
         return ResponseEntity.ok(modifiedTodoDTO); // 수정된 TodoDTO 객체를 반환
+    }
+
+    @DeleteMapping("/{mno}")
+    public ResponseEntity<Map<String, String>> remove(@PathVariable("mno") Long mno) { 
+        log.info("remove...............");
+        log.info(mno);
+
+        todoService.remove(mno);
+
+        // void 타입이기 때문에 다른 결과들처럼 JSON 결과를 만들어서 반환한다.
+        Map<String, String> result = Map.of("result", "success");
+
+        return ResponseEntity.ok(result); // 삭제 성공 시 204 No Content 응답 반환
     }
 }
