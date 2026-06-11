@@ -32,7 +32,7 @@ public class MemberEntity {
     private String email;
 
     @CreatedDate
-    private LocalDateTime joindate;
+    private LocalDateTime joinDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
