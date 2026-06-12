@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import com.ex3.khg.member.entity.MemberEntity;
 import com.ex3.khg.member.exception.MemberExceptions;
+
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 public class MemberRepositoryTests {
@@ -34,13 +37,26 @@ public class MemberRepositoryTests {
     }
      
     @Test
-    public void testRead() { // 조회 테스트
-        String mid = "user";
+    public void testRead() { // 조회 테스트 (실패하고 메세지가 나오는게 정상)
+        String mid = "user"; // 없는 id 
 
         Optional<MemberEntity> result = memberRepository.findById(mid);
 
         MemberEntity memberEntity = result.orElseThrow(MemberExceptions.NOT_FOUND::get);
 
         System.out.println(memberEntity);
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testUpdate() { // 수정 테스트
+        String mid = "user1";
+        Optional<MemberEntity> result = memberRepository.findById(mid);
+
+        MemberEntity memberEntity = result.orElseThrow(MemberExceptions.NOT_FOUND::get);
+
+        memberEntity.changePassword(passwordEncoder.encode("2222"));
+        memberEntity.changeName("수정된id");
     }
 }
