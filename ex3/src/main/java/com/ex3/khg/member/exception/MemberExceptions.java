@@ -5,13 +5,13 @@ public enum MemberExceptions {
     DUPLICATE("이미 존재하는 회원입니다.", 409),
     INVALID("유효하지 않은 회원 정보입니다.", 400);
 
-    private MemberTaskExceptiopn memberTaskExceptiopn;
+    private MemberTaskException MemberTaskException;
 
     MemberExceptions(String msg, int code) {
-        memberTaskExceptiopn = new MemberTaskExceptiopn(msg, code);
+        MemberTaskException = new MemberTaskException(msg, code);
     }
 
-    public MemberTaskExceptiopn get() {
-        return memberTaskExceptiopn;
+    public MemberTaskException get() {
+        return MemberTaskException;
     }
 }
