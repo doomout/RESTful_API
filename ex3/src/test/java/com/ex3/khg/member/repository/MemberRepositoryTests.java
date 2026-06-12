@@ -59,4 +59,15 @@ public class MemberRepositoryTests {
         memberEntity.changePassword(passwordEncoder.encode("2222"));
         memberEntity.changeName("수정된id");
     }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testDelete() {
+        String mid = "user2";
+        Optional<MemberEntity> result = memberRepository.findById(mid);
+        MemberEntity memberEntity = result.orElseThrow(() -> MemberExceptions.NOT_FOUND.get());
+
+        memberRepository.delete(memberEntity);
+    }
 }
