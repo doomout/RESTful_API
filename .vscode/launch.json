@@ -25,6 +25,16 @@
             "projectName": "khg",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-KhgApplication<ex3>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ex3.khg.KhgApplication",
+            "projectName": "ex3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
