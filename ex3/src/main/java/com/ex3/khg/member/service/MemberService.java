@@ -25,7 +25,8 @@ public class MemberService {
 
     public MemberDTO read(String mid, String mpw) {
         Optional<MemberEntity> result = memberRepository.findById(mid);
-        MemberEntity memberEntity = result.orElseThrow(MemberExceptions.NOT_FOUND::get);
+
+        MemberEntity memberEntity = result.orElseThrow(MemberExceptions.BAD_CREDENTIALS::get);
 
         if(!passwordEncoder.matches(mpw, memberEntity.getMpw())) {
             throw MemberExceptions.BAD_CREDENTIALS.get();
