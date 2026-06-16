@@ -3,6 +3,7 @@ package com.ex3.khg.member.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ex3.khg.member.dto.MemberDTO;
+import com.ex3.khg.member.security.util.JWTUtil;
 import com.ex3.khg.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class TokenController {
     private final MemberService memberService;
+
+    private final JWTUtil jwtUtil;
     
     @PostMapping("/make")
     public ResponseEntity<Map<String, String>> makeToken(@RequestBody MemberDTO memberDTO) {
@@ -29,6 +32,14 @@ public class TokenController {
         MemberDTO memberDTOResult = memberService.read(memberDTO.getMid(), memberDTO.getMpw());
 
         log.info(memberDTOResult);
+
+        String mid = memberDTOResult.getMid();
+
+        Map<String, Object> dataMap =  memberDTOResult.getDataMap();
+        String accessToken = jwtUtil.createToken(dataMap, 10);
+        String refreshToken = jwtUtil.createToken(Map.of("mid", mid), 60 * 24 * 7);
+        log.info("accessToken: " + accessToken);
+        log.info("refreshToken: " + refreshToken);
         
         return null;
     }
