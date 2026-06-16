@@ -41,7 +41,7 @@ public class TokenController {
         log.info("accessToken: " + accessToken);
         log.info("refreshToken: " + refreshToken);
         
-        return null;
+        return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken));
     }
     
 }
