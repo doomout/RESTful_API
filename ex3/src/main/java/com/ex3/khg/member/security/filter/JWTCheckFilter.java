@@ -22,6 +22,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        if(request.getServletPath().startsWith("/api/v1/token")) {
+            return true;
+        }
         // 경로 지정 필요
         return false;
     }
