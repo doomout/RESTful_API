@@ -43,6 +43,19 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             return;
         }
+
+        String accessToken = headerStr.substring(7);
+        try {
+            java.util.Map<String, Object> tokenMap = jwtUtil.validateToken(accessToken);
+
+            // 토큰 검증 결과에 문제가 없다면
+            log.info("tokenMap: " + tokenMap);
+
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            // 문제가 발생하면
+            handleException(response, e);
+        }
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
