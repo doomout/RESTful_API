@@ -1,10 +1,17 @@
 package com.ex3.khg.member.security.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ex3.khg.member.security.auth.CustomUserPrincipal;
 import com.ex3.khg.member.security.util.JWTUtil;
 
 import jakarta.servlet.FilterChain;
@@ -50,6 +57,23 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             // 토큰 검증 결과에 문제가 없다면
             log.info("tokenMap: " + tokenMap);
+
+            String mid = tokenMap.get("mid").toString();
+
+            // 권한이 여러 개인 경우에는 ,로 구분해서 처리
+            String[] roles = tokenMap.get("role").toString().split(",");
+
+            // 토큰 검증 결과를 이용해서 Authentication 객체를 생성
+            UsernamePasswordAuthenticationToken authenticationToken =  
+                new UsernamePasswordAuthenticationToken(
+                    new CustomUserPrincipal(mid), null, Arrays.stream(roles).map(
+                        role -> new SimpleGrantedAuthority("ROLE_" + role)
+                    ).collect(Collectors.toList()));
+
+            // SecurityContextHolder 에 Authentication 객체를 저장
+            // 이후에 SecurityContextHolder 를 이용해서 Authentication 객체를 꺼내서 사용할 수 있다.
+            SecurityContext context = SecurityContextHolder.getContext();
+            context.setAuthentication(authenticationToken);
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {
