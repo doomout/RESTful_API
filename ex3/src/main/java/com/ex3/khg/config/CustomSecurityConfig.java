@@ -1,5 +1,6 @@
 package com.ex3.khg.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,6 +9,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ex3.khg.member.security.filter.JWTCheckFilter;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -15,6 +19,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @EnableMethodSecurity(prePostEnabled = true) // 메서드 단위로 권한 검사하는 기능을 켜겠다
 public class CustomSecurityConfig {
+    private JWTCheckFilter jwtCheckFilter;
+
+    @Autowired
+    private void setJwtCheckFilter(JWTCheckFilter jwtCheckFilter) {
+        this.jwtCheckFilter = jwtCheckFilter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         log.info("filter chain......");
@@ -36,6 +47,9 @@ public class CustomSecurityConfig {
         httpSecurity.sessionManagement(sessionManagementConfigurer -> {
             sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
         });
+
+        // jwtCheckFilter 를 UsernamePasswordAuthenticationFilter 앞에 두기
+        httpSecurity.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 위 설정을 기반으로 Spring Security 필터 체인을 생성합니다.
         return httpSecurity.build();
