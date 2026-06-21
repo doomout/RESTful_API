@@ -60,5 +60,7 @@ public class TokenController {
         return null;
     }
     
-    
+    private ResponseEntity<Map<String, String>> hanleException(String msg, int status) {
+        return ResponseEntity.status(status).body(Map.of("error", msg));
+    }
 }
