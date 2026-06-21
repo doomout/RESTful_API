@@ -55,20 +55,29 @@ public class TokenController {
         // 토큰 존재 확인
         log.info("Access Token with Bearer............"+ accessTokenStr);
         if(accessTokenStr == null || !accessTokenStr.startsWith("Bearer")) {
-            return hanleException("NO Access Token",  400);
+            return handleException("NO Access Token",  400);
         }
 
         if(refreshToken == null) {
-            return hanleException("No Refresh Token", 400);
+            return handleException("No Refresh Token", 400);
         }
 
         log.info("refresh token...............", refreshToken);
 
         // mid 존재 확인
         if(mid == null) {
-            return hanleException("No Mid", 400); 
+            return handleException("No Mid", 400); 
         }
         // Access Token 이 만료되었는지 확인
+        String accessToken = accessTokenStr.substring(7);
+
+        try {
+            jwtUtil.validateToken(accessToken);
+        } catch(io.jsonwebtoken.ExpiredJwtException expiredJwtException) {
+            //Refresh 가 필요한 상황
+        } catch(Exception e) {
+            return handleException(e.getMessage(), 400); 
+        }
         // Refresh Token 검증
         // Refresh Token 에서 mid 검증
         // 새로운 Access Token, Refresh Token 생성
@@ -76,7 +85,7 @@ public class TokenController {
         return null;
     }
     
-    private ResponseEntity<Map<String, String>> hanleException(String msg, int status) {
+    private ResponseEntity<Map<String, String>> handleException(String msg, int status) {
         
         return ResponseEntity.status(status).body(Map.of("error", msg));
     }
