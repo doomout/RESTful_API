@@ -73,6 +73,10 @@ public class TokenController {
 
         try {
             jwtUtil.validateToken(accessToken);
+            // 아직 만료 기한이 남아 있는 상황
+            Map<String, String> data = makeData(mid, accessToken, refreshToken);
+            
+            return ResponseEntity.ok(data);
         } catch(io.jsonwebtoken.ExpiredJwtException expiredJwtException) {
             //Refresh 가 필요한 상황
         } catch(Exception e) {
@@ -91,7 +95,7 @@ public class TokenController {
     }
 
     // Access Token 이 만료되지 않았는데 호출 되었을 때 새로운 토큰 발행 필요 없이 그대로 전송하는 메서드
-    private Map<String, String> makeDate(String mid, String accesssToken, String refreshToken) {
+    private Map<String, String> makeData(String mid, String accesssToken, String refreshToken) {
         return Map.of("mid", mid, "accessToken", accesssToken, "refreshToken", refreshToken);
     }
 }
