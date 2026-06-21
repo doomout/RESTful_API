@@ -52,6 +52,22 @@ public class TokenController {
         @RequestParam("refreshToken") String refreshToken,
         @RequestParam("mid") String mid
     ) {
+        // 토큰 존재 확인
+        log.info("Access Token with Bearer............"+ accessTokenStr);
+        if(accessTokenStr == null || !accessTokenStr.startsWith("Bearer")) {
+            return hanleException("NO Access Token",  400);
+        }
+
+        if(refreshToken == null) {
+            return hanleException("No Refresh Token", 400);
+        }
+
+        log.info("refresh token...............", refreshToken);
+
+        // mid 존재 확인
+        if(mid == null) {
+            return hanleException("No Mid", 400); 
+        }
         // Access Token 이 만료되었는지 확인
         // Refresh Token 검증
         // Refresh Token 에서 mid 검증
@@ -61,6 +77,7 @@ public class TokenController {
     }
     
     private ResponseEntity<Map<String, String>> hanleException(String msg, int status) {
+        
         return ResponseEntity.status(status).body(Map.of("error", msg));
     }
 }
