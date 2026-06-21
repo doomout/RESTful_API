@@ -14,7 +14,9 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -43,5 +45,20 @@ public class TokenController {
         
         return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken));
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String, String>> refreshToken(
+        @RequestHeader("Authorization") String accessTokenStr,
+        @RequestParam("refreshToken") String refreshToken,
+        @RequestParam("mid") String mid
+    ) {
+        // Access Token 이 만료되었는지 확인
+        // Refresh Token 검증
+        // Refresh Token 에서 mid 검증
+        // 새로운 Access Token, Refresh Token 생성
+        // 전송
+        return null;
+    }
+    
     
 }
