@@ -89,4 +89,9 @@ public class TokenController {
         
         return ResponseEntity.status(status).body(Map.of("error", msg));
     }
+
+    // Access Token 이 만료되지 않았는데 호출 되었을 때 새로운 토큰 발행 필요 없이 그대로 전송하는 메서드
+    private Map<String, String> makeDate(String mid, String accesssToken, String refreshToken) {
+        return Map.of("mid", mid, "accessToken", accesssToken, "refreshToken", refreshToken);
+    }
 }
