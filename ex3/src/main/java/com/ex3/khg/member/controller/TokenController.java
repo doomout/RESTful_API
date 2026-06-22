@@ -75,20 +75,24 @@ public class TokenController {
             jwtUtil.validateToken(accessToken);
             // 아직 만료 기한이 남아 있는 상황
             Map<String, String> data = makeData(mid, accessToken, refreshToken);
+
+            log.info("Access Token is not expired...........");
             
             return ResponseEntity.ok(data);
         } catch(io.jsonwebtoken.ExpiredJwtException expiredJwtException) {
-            //Refresh 가 필요한 상황
-            makeNewToken(mid, refreshToken);
+            try {
+                // Refresh 가 필요한 상황
+                Map<String, String> newTokenMap = makeNewToken(mid, refreshToken);
+
+                return ResponseEntity.ok(newTokenMap);
+            } catch(Exception e) {
+                return handleException("Refresh " + e.getMessage(), 400);
+            }
             
         } catch(Exception e) {
+            e.printStackTrace(); // 디버깅용
             return handleException(e.getMessage(), 400); 
         }
-        // Refresh Token 검증
-        // Refresh Token 에서 mid 검증
-        // 새로운 Access Token, Refresh Token 생성
-        // 전송
-        return null;
     }
     
     private ResponseEntity<Map<String, String>> handleException(String msg, int status) {
