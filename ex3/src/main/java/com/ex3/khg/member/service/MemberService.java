@@ -34,4 +34,13 @@ public class MemberService {
 
         return new MemberDTO(memberEntity);
     }
+
+    // 새로운 토큰을 발행하기 위해 mid 에 해당하는 사용자를 가져오는 메서드
+    public MemberDTO getByMid(String mid) {
+        Optional<MemberEntity> result = memberRepository.findById(mid);
+
+        MemberEntity memberEntity = result.orElseThrow(MemberExceptions.NOT_FOUND::get);
+
+        return new MemberDTO(memberEntity);
+    }
 }
