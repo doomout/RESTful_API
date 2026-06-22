@@ -79,6 +79,8 @@ public class TokenController {
             return ResponseEntity.ok(data);
         } catch(io.jsonwebtoken.ExpiredJwtException expiredJwtException) {
             //Refresh 가 필요한 상황
+            makeNewToken(mid, refreshToken);
+            
         } catch(Exception e) {
             return handleException(e.getMessage(), 400); 
         }
