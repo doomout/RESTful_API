@@ -98,4 +98,21 @@ public class TokenController {
     private Map<String, String> makeData(String mid, String accesssToken, String refreshToken) {
         return Map.of("mid", mid, "accessToken", accesssToken, "refreshToken", refreshToken);
     }
+
+    // Access Token 이 만료되면 새로운 토큰 발행
+    private Map<String, String> makeNewToken(String mid, String refreshToken) {
+        try {
+            Map<String, Object> claims = jwtUtil.validateToken(refreshToken);
+             
+            if(!mid.equals(claims.get("mid").toString())) {
+                throw new RuntimeException("Invalid Refresh Token Host");
+            }
+            // mid 를 이용해서 사용자 정보를 다시 확인한 후에 새로운 토큰 생성
+
+        }catch(Exception e) {
+            handleException(e.getMessage(), 400);
+        }
+
+        return null;
+    }
 }
