@@ -56,6 +56,11 @@ public class CustomSecurityConfig {
         // jwtCheckFilter 를 UsernamePasswordAuthenticationFilter 앞에 두기
         httpSecurity.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
+        // CORS 설정 추가
+        httpSecurity.cors(cors -> {
+            cors.configurationSource(configurationSource());
+        });
+
         // 위 설정을 기반으로 Spring Security 필터 체인을 생성합니다.
         return httpSecurity.build();
     }
