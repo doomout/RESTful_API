@@ -1,5 +1,7 @@
 package com.ex3.khg.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ex3.khg.member.security.filter.JWTCheckFilter;
 
@@ -59,5 +64,19 @@ public class CustomSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         // 회원 비밀번호를 안전하게 저장하기 위해 BCrypt 해시 알고리즘을 사용합니다.
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CorsConfigurationSource configurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.setAllowedOriginPatterns(List.of("*")); // 어디서든 허락
+        corsConfiguration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","HEAD","OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "CacheControl","Content-Type"));
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",  corsConfiguration);
+        
+        return source;
     }
 }
