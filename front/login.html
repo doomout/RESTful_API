@@ -22,7 +22,17 @@
             document.querySelector(".loginBtn").addEventListener("click", () => {
                 const mid = document.querySelector("input[name='mid']").value
                 const mpw = document.querySelector("input[name='mpw']").value
-                makeToken(mid, mpw)
+                makeToken(mid, mpw).then(data => {
+                    const accssToken = data.accessToken
+                    const refreshToken = data.refreshToken
+
+                    console.log("Access Token: ", accssToken)
+                    console.log("Refresh Token: ", refreshToken)
+                }).catch(err => {
+                    console.log(err)
+                    const errorMsg = err.response.data.error
+                    alert(errorMsg)
+                })
             }, false)
         </script>
     </body>
