@@ -17,7 +17,7 @@
         </div>
         <script type="module" src="/js/api.js"></script>
         <script type="module">
-            import { makeToken } from './js/api.js'
+            import { makeToken, saveToken } from './js/api.js'
 
             document.querySelector(".loginBtn").addEventListener("click", () => {
                 const mid = document.querySelector("input[name='mid']").value
@@ -28,6 +28,10 @@
 
                     console.log("Access Token: ", accssToken)
                     console.log("Refresh Token: ", refreshToken)
+
+                    saveToken("accessToken", accssToken)
+                    saveToken("refreshToken", refreshToken)
+                    saveToken("mid", mid)
                 }).catch(err => {
                     console.log(err)
                     const errorMsg = err.response.data.error
