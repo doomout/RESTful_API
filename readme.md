@@ -7,6 +7,9 @@
 - vscode
 - java 21
 - postman
+- vite: 8.1.0
+- axios: 1.18.1
+- universal-cookie: 8.1.2
 
 ##  1. API 서버와 REST
 ### 01. API 서버와 웹 MVC
