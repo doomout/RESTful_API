@@ -6,5 +6,16 @@
 </head>
 <body>
     <h1>List page</h1>
+
+    <script type="module" src="/js/api.js"></script>
+    <script type="module">
+        import { getSamples } from './js/api.js'
+
+        getSamples().then(data => {
+            console.log(data)
+        }).catch(err => {
+            console.log(err)
+        })
+    </script>
 </body>
 </html>
