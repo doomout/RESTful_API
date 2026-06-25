@@ -33,6 +33,8 @@
                     saveToken("accessToken", accessToken)
                     saveToken("refreshToken", refreshToken)
                     saveToken("mid", mid)
+
+                    window.location.href = "/list.html" // 이동
                 }).catch(err => {
                     console.log(err)
                     const errorMsg = err.response.data.error
