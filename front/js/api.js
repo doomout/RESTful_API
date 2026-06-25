@@ -12,13 +12,13 @@ export const makeToken = async (mid, mpw) => {
     const data = {mid, mpw}
     const res = await axios.post(path, data)
 
-    // 쿠키 기능 설정(기본 경로 /, 30일 동안 저장)
-    const cookies = new Cookies(null, {path: '/', maxAge: 2592000})
-    
-    export const saveToken = (tokenName, tokenValue) => {
-        cookies.set(tokenName, tokenValue)
-    }
-    
     // 결과 데이터 반환
     return res.data
+}
+
+// 쿠키 기능 설정(기본 경로 /, 30일 동안 저장)
+const cookies = new Cookies(null, {path: '/', maxAge: 2592000})
+
+export const saveToken = (tokenName, tokenValue) => {
+    cookies.set(tokenName, tokenValue)
 }
