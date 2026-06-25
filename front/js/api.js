@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from "universal-cookie";
-import jwtAxios from './custoAxios';
+import jwtAxios from './customAxios';
 
 export const testApi = () => {
     console.log("test Api.....")
