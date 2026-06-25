@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from "universal-cookie";
+import jwtAxios from './custoAxios';
 
 export const testApi = () => {
     console.log("test Api.....")
@@ -21,4 +22,11 @@ const cookies = new Cookies(null, {path: '/', maxAge: 2592000})
 
 export const saveToken = (tokenName, tokenValue) => {
     cookies.set(tokenName, tokenValue)
+}
+
+export const getSamples = async (pageNum) => {
+    const path = url + "samples/list"
+    const res = await jwtAxios.get(path)
+
+    return res.data
 }
