@@ -17,6 +17,20 @@ const beforeRequest = (config) => {
     return config
 }
 
+const beforeResponse = (response) => {
+    console.log('beforeResponse')
+
+    return response
+}
+
+const errorResponse = (error) => {
+    console.log('errorResponse')
+    console.log(error)
+
+    return Promise.reject(error)
+}
+
 jwtAxios.interceptors.request.use(beforeRequest)
+jwtAxios.interceptors.request.use(beforeRequest, errorResponse)
 
 export default jwtAxios
