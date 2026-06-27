@@ -14,7 +14,8 @@
         getSamples().then(data => {
             console.log(data)
         }).catch(err => {
-            console.log(err)
+            const errorMsg = err.message
+            alert(errorMsg)
         })
     </script>
 </body>
