@@ -30,3 +30,22 @@ export const getSamples = async (pageNum) => {
 
     return res.data
 }
+
+// Refresh Token 를 이용해서 다시 서버를 호출
+export async function requestRefreshToken() {
+    // refresh token
+    const refreshToken = cookies.get("refreshToken")
+    const mid = cookies.get("mid")
+    const accessToken = cookies.get("accessToken")
+
+    if(!mid || !refreshToken || !accessToken) {
+        throw Error("Cannot request refresh...")
+    }
+    const path = url + "token/refresh"
+    const header = {'content-type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + accessToken}
+    const data = {refreshToken, mid}
+
+    const res = await axios.post(path, data, {headers: header})
+
+    return res.data
+}
