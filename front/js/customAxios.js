@@ -25,7 +25,12 @@ const beforeResponse = (response) => {
 
 const errorResponse = (error) => {
     console.log('errorResponse')
-    console.log(error)
+
+    const status = error.response.status
+    const res = error.response.data
+    const errorMsg = res.error
+
+    console.log(status, res, errorMsg)
 
     return Promise.reject(error)
 }
