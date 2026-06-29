@@ -23,9 +23,11 @@ const beforeResponse = (response) => {
     return response
 }
 
-import { requestRefreshToken } from "./api";
+import { requestRefreshToken, saveToken } from "./api";
 
 const errorResponse = (error) => {
+    console.log('errorResponse')
+
     // 토큰이 만료된 경우에 동작
     if(error.response.status) {
         const status = error.response.status
@@ -36,7 +38,12 @@ const errorResponse = (error) => {
 
         if(errorMsg.indexOf("expored") > -1) {
             console.log("Refresh Token")
-            requestRefreshToken()
+            
+            requestRefreshToken().then(data => {
+                console.log(data)
+                saveToken("accessToken", data.accessToken)
+                saveToken("refreshToken", data.refreshToken)
+            })
         }
     }
     return Promise.reject(error)
