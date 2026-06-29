@@ -14,8 +14,14 @@
         getSamples().then(data => {
             console.log(data)
         }).catch(err => {
-            const errorMsg = err.message
-            alert(errorMsg)
+            console.log(err)
+
+            const errorMsg = err.response.data.error
+            if(errorMsg) {
+                if(errorMsg.indexOf("REFRESH") >= 0) {
+                    window.location.href = "/login.html"
+                }
+            }
         })
     </script>
 </body>
