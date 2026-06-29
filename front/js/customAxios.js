@@ -30,23 +30,31 @@ const errorResponse = (error) => {
 
     // 토큰이 만료된 경우에 동작
     if(error.response.status) {
+        console.log('errorReponse')
+
         const status = error.response.status
         const res = error.response.data
         const errorMsg = res.error
 
         console.log(status, res, errorMsg)
 
-        if(errorMsg.indexOf("expored") > -1) {
+        const refreshFn = async () => {
             console.log("Refresh Token")
-            
-            requestRefreshToken().then(data => {
-                console.log(data)
-                saveToken("accessToken", data.accessToken)
-                saveToken("refreshToken", data.refreshToken)
-            })
+            const data = await requestRefreshToken()
+            saveToken("accessToken", data.accessToken)
+            saveToken("refreshToken", data.refreshToken)
+
+            error.config.headers["Authorization"] = "Bearer " + data.accessToken
+
+            return await axios(error.config)
+        }
+
+        if(errorMsg.indexOf("expired") > 0) {
+            return refreshFn()
+        }else {
+            return Promise.reject(error)
         }
     }
-    return Promise.reject(error)
 }
 
 jwtAxios.interceptors.request.use(beforeRequest)
