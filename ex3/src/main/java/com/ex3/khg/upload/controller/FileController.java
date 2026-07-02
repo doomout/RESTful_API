@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex3.khg.upload.exception.UploadNotSupportedExcepiton;
+import com.ex3.khg.util.UploadUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/v1/files")
 @RequiredArgsConstructor
 public class FileController {
+    private final UploadUtil uploadUtil;
+
     @PostMapping("/upload")
     public ResponseEntity<List<String>> uploadFile(@RequestParam("files") MultipartFile[] files) {
         log.info("upload file.....");
@@ -33,7 +36,9 @@ public class FileController {
             checkFileType(file.getOriginalFilename());
         }
 
-        return null;
+        List<String> result = uploadUtil.upload(files);
+
+        return ResponseEntity.ok(result);
     }
 
     private void checkFileType(String fileName) throws UploadNotSupportedExcepiton {
