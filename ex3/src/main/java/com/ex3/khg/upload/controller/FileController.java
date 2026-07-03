@@ -12,6 +12,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,5 +51,14 @@ public class FileController {
         if(!suffix.matches(regExp)) {
             throw new UploadNotSupportedExcepiton("File type not supported: " + suffix);
         }
+    }
+
+    // 파일 삭제
+    @DeleteMapping("/delete/{fileName}")
+    public ResponseEntity<Void> deleteFile(@PathVariable(name = "fileName") String fileName) {
+        log.info("delete file: " + fileName);
+        uploadUtil.deleteFile(fileName);
+
+        return ResponseEntity.ok().build();
     }
 }
