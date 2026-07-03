@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 @Component
 @Log4j2
 public class UploadUtil {
@@ -54,9 +56,14 @@ public class UploadUtil {
 
             // 파일 업로드
             try (InputStream in = file.getInputStream(); 
-                 OutputStream out = new FileOutputStream(new File(uploadPath, File.separator +  saveFileName))
+                 OutputStream out = new FileOutputStream(uploadPath + File.separator +  saveFileName)
             ) {
                 FileCopyUtils.copy(in, out);
+
+                Thumbnails.of(new File(uploadPath + File.separator +  saveFileName))
+                          .size(200, 200)
+                          .toFile(uploadPath + File.separator + "s_" + saveFileName); // 썸네일 구분자 s_
+
                 result.add(saveFileName);    
             } catch (Exception e) {
                 log.error(e.getMessage());
