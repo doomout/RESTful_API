@@ -11,7 +11,11 @@ import com.ex3.khg.products.entity.ProductEntity;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     // images 속성을 즉시 로딩으로 가져오기 위해 EntityGraph를 사용
-    @EntityGraph(attributePaths = "images", type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT p FROM ProductEntity p WHERE p.pno = :pno")
-    Optional<ProductEntity> findByIdWithImages(@Param("pno") Long pno); 
+    // @EntityGraph(attributePaths = "images", type = EntityGraph.EntityGraphType.FETCH)
+    // @Query("SELECT p FROM ProductEntity p WHERE p.pno = :pno")
+    // Optional<ProductEntity> getProduct(@Param("pno") Long pno); 
+
+    // Fetch Join(JPA 에서만 사용)로 images 속성을 즉시 로딩으로 가져오기
+    @Query("SELECT p FROM ProductEntity p JOIN FETCH p.images pi WHERE p.pno = :pno")
+    Optional<ProductEntity> getProduct(@Param("pno") Long pno);
 }
