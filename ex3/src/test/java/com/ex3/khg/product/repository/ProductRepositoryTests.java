@@ -47,7 +47,18 @@ public class ProductRepositoryTests {
         Long pno = 1L;
         Optional<ProductEntity> result = productRepository.findById(pno);
         ProductEntity productEntity = result.get();
-        
+
+        System.out.println(productEntity);
+        System.out.println("-----------------------------");
+        System.out.println(productEntity.getImages());
+    }
+
+    @Test // 즉시 로딩 테스트
+    public void TestReadQuery() {
+        Long pno = 1L;
+        Optional<ProductEntity> result = productRepository.getProduct(pno); //인터페이스에 정의한 getProduct() 메서드 호출
+        ProductEntity productEntity = result.get();
+
         System.out.println(productEntity);
         System.out.println("-----------------------------");
         System.out.println(productEntity.getImages());
