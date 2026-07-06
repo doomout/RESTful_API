@@ -1,5 +1,7 @@
 package com.ex3.khg.product.repository;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,7 +20,7 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository productRepository;
 
-    @Test
+    @Test // 상품 1개 + 이미지 2개 등록 테스트
     @Transactional
     @Commit
     public void testInsert() {
@@ -37,5 +39,17 @@ public class ProductRepositoryTests {
 
             System.out.println("New Product no: " + productEntity.getPno());
         }
+    }
+
+    @Test // 지연 로딩 테스트
+    @Transactional(readOnly = true)
+    public void testRead() {
+        Long pno = 1L;
+        Optional<ProductEntity> result = productRepository.findById(pno);
+        ProductEntity productEntity = result.get();
+        
+        System.out.println(productEntity);
+        System.out.println("-----------------------------");
+        System.out.println(productEntity.getImages());
     }
 }
