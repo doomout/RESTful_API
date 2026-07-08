@@ -80,4 +80,12 @@ public class ProductRepositoryTests {
         // 변경 감지시에는 필요없음 
         //productRepository.save(productEntity);
     }
+
+    @Test // 상품 삭제 테스트
+    @Transactional
+    @Commit
+    public void testDelete() {
+        Long pno = 1L;
+        productRepository.deleteById(pno);
+    }
 }
