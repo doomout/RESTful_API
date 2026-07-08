@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.repository.ProductRepository;
 
@@ -53,33 +54,33 @@ public class ProductRepositoryTests {
         System.out.println(productEntity.getImages());
     }
 
-    @Test // 즉시 로딩 테스트
-    public void TestReadQuery() {
-        Long pno = 1L;
-        Optional<ProductEntity> result = productRepository.getProduct(pno); //인터페이스에 정의한 getProduct() 메서드 호출
-        ProductEntity productEntity = result.get();
+    // @Test // 즉시 로딩 테스트(인터페이스 변경으로 인해 주석처리)
+    // public void TestReadQuery() {
+    //     Long pno = 1L;
+    //     Optional<ProductEntity> result = productRepository.getProduct(pno); //인터페이스에 정의한 getProduct() 메서드 호출
+    //     ProductEntity productEntity = result.get();
 
-        System.out.println(productEntity);
-        System.out.println("-----------------------------");
-        System.out.println(productEntity.getImages());
-    }
+    //     System.out.println(productEntity);
+    //     System.out.println("-----------------------------");
+    //     System.out.println(productEntity.getImages());
+    // }
 
-    @Test // 상품 수정 테스트
-    @Transactional
-    @Commit
-    public void testUpdate() {
-        Long pno = 1L;
-        Optional<ProductEntity> result = productRepository.getProduct(pno);
-        ProductEntity productEntity = result.get();
+    // @Test // 상품 수정 테스트(인터페이스 변경으로 인해 주석처리)
+    // @Transactional
+    // @Commit
+    // public void testUpdate() {
+    //     Long pno = 1L;
+    //     Optional<ProductEntity> result = productRepository.getProduct(pno);
+    //     ProductEntity productEntity = result.get();
 
-        productEntity.changeTitle("변경된 상품");
-        productEntity.changePrice(10000);
-        productEntity.addImage("new1.jpg");
-        productEntity.addImage("new2.jpg");
+    //     productEntity.changeTitle("변경된 상품");
+    //     productEntity.changePrice(10000);
+    //     productEntity.addImage("new1.jpg");
+    //     productEntity.addImage("new2.jpg");
 
-        // 변경 감지시에는 필요없음 
-        //productRepository.save(productEntity);
-    }
+    //     // 변경 감지시에는 필요없음 
+    //     //productRepository.save(productEntity);
+    // }
 
     @Test // 상품 삭제 테스트
     @Transactional
@@ -87,5 +88,14 @@ public class ProductRepositoryTests {
     public void testDelete() {
         Long pno = 1L;
         productRepository.deleteById(pno);
+    }
+
+    @Test // ProductDTO 반환 테스트
+    public void testReadDTO() {
+        Long pno = 1L;
+        Optional<ProductDTO> result = productRepository.getProductDTO(pno);
+        ProductDTO productDTO = result.get();
+
+        System.out.println(productDTO);
     }
 }
