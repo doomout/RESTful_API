@@ -63,4 +63,21 @@ public class ProductRepositoryTests {
         System.out.println("-----------------------------");
         System.out.println(productEntity.getImages());
     }
+
+    @Test // 상품 수정 테스트
+    @Transactional
+    @Commit
+    public void testUpdate() {
+        Long pno = 1L;
+        Optional<ProductEntity> result = productRepository.getProduct(pno);
+        ProductEntity productEntity = result.get();
+
+        productEntity.changeTitle("변경된 상품");
+        productEntity.changePrice(10000);
+        productEntity.addImage("new1.jpg");
+        productEntity.addImage("new2.jpg");
+
+        // 변경 감지시에는 필요없음 
+        //productRepository.save(productEntity);
+    }
 }
