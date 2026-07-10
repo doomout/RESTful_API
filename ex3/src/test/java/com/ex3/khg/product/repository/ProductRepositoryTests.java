@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,5 +100,11 @@ public class ProductRepositoryTests {
         ProductDTO productDTO = result.get();
 
         System.out.println(productDTO);
+    }
+
+    @Test // join fetch 테스트
+    public void testList() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+        productRepository.list(pageable);
     }
 }
