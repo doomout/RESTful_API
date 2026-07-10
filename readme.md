@@ -21,12 +21,15 @@
 ### 03. Spring Data JPA
 - [05.JPA](./docs/05-jpa.md)
 ### 04. 서비스 계층과 컨트롤러 계층
+- [06.Service 계층과 Controller 계층](./docs/06-service-controller.md) 
 
 ## 2. JWT 인증
 ### 01. 시큐리티 처리와 JWT
+- [07.JWT](./docs/07-jwt.md)
 ### 02. Axios 와 API 서버 호출
+- [08.Axios 와 API 호출](./docs/08-axios-api.md)
 
 ## 3. 연관 관계 실습
 ### 01. 파일 업로드와 상품 엔티티
-- [01.FileUpload 설명](./docs/06-fileUpload.md)
+- [01.FileUpload 설명](./docs/09-fileUpload.md)
 ### 02. 구현을 통해서 알아보는 연관 관계 실습
