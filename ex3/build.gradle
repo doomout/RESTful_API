@@ -33,8 +33,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-	//Quirydsl
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+	
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// Spring security
@@ -48,6 +47,9 @@ dependencies {
 	// thumbnailator
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.20'
 
+	//Quirydsl
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+	
 	annotationProcessor (
 		"jakarta.persistence:jakarta.persistence-api",
 		"jakarta.annotation:jakarta.annotation-api",
