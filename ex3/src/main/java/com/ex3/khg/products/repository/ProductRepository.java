@@ -9,8 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.entity.ProductEntity;
+import com.ex3.khg.products.repository.search.ProductSearch;
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Long>, ProductSearch {
     // images 속성을 즉시 로딩으로 가져오기 위해 EntityGraph를 사용
     // @EntityGraph(attributePaths = "images", type = EntityGraph.EntityGraphType.FETCH)
     // @Query("SELECT p FROM ProductEntity p WHERE p.pno = :pno")
