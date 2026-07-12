@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.entity.QProductEntity;
@@ -56,4 +57,17 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         return new PageImpl<>(dtoList, pageable, count); 
     }
     
+    @Override
+    public Page<ProductDTO> listWithAllImages(Pageable pageable) {
+        QProductEntity productEntity = QProductEntity.productEntity;
+
+        JPQLQuery<ProductEntity> query = from(productEntity);
+
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        query.fetch();
+        query.fetchCount();
+
+        return null;
+    }
 }
