@@ -3,6 +3,7 @@ package com.ex3.khg.products.entity;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -38,6 +39,7 @@ public class ProductEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tbl_product_images", joinColumns = @JoinColumn(name = "pno"))
     @Builder.Default
+    @BatchSize(size = 100) // 한 페이지에 최대 100개의 상품 이미지를 조회하도록 설정
     private SortedSet<ProductImage> images = new TreeSet<>();
 
     public void addImage(String fileName) {
