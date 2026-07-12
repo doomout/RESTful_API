@@ -68,12 +68,15 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         List<ProductEntity> entityList = query.fetch();
         long count = query.fetchCount();
 
-        for(ProductEntity entity : entityList) {
-            System.out.println(entity);
-            System.out.println(entity.getImages());
-            System.out.println("-----------------------------");
-        }
+        // for(ProductEntity entity : entityList) {
+        //     System.out.println(entity);
+        //     System.out.println(entity.getImages());
+        //     System.out.println("-----------------------------");
+        // }
 
-        return null;
+        // ProductEntity를 ProductDTO로 변환
+        List<ProductDTO> dtoList = entityList.stream().map(ProductDTO::new).toList();
+
+        return new PageImpl<>(dtoList, pageable, count);
     }
 }
