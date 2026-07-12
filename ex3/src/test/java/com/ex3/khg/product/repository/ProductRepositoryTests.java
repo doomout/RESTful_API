@@ -113,4 +113,12 @@ public class ProductRepositoryTests {
             System.out.println(productListDTO); 
         });
     }
+
+    @Test // All Images 조회 테스트
+    @Transactional
+    public void testListWithAllImages() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+        Page<ProductDTO> result = productRepository.listWithAllImages(pageable);
+        
+    }
 }
