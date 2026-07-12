@@ -1,6 +1,9 @@
 package com.ex3.khg.products.repository.search;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -8,6 +11,7 @@ import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.entity.QProductEntity;
 import com.ex3.khg.products.entity.QProductImage;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 
 public class ProductSearchImpl extends QuerydslRepositorySupport implements ProductSearch {
@@ -30,16 +34,26 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         // 대표 이미지(idx = 0)만 조회 하나의 상품에 이미지가 여러 장 있으므로 첫 번째 이미지만 가져오기 위함
         query.where(productImage.idx.eq(0));
 
+        // 조회할 컬럼들을 ProductListDTO에 매핑
+        JPQLQuery<ProductListDTO> dtojpqlQuery = query.select(Projections.bean(ProductListDTO.class,
+                productEntity.pno,
+                productEntity.pname,
+                productEntity.price,
+                productEntity.writer,
+                productImage.fileName.as("productImage")
+            )
+        );
         // Pageable에 들어있는 페이지 번호, 페이지 크기, 정렬 정보를 Query에 적용
-        this.getQuerydsl().applyPagination(pageable, query);
+        this.getQuerydsl().applyPagination(pageable, dtojpqlQuery);
 
         // 실제 조회 실행
-        query.fetch();
+        List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
 
         // 전체 데이터 개수 조회
-        query.fetchCount();
+        long count = dtojpqlQuery.fetchCount();
 
-        return null; 
+        // 조회된 데이터와 전체 데이터 개수를 PageImpl 객체로 반환
+        return new PageImpl<>(dtoList, pageable, count); 
     }
     
 }
