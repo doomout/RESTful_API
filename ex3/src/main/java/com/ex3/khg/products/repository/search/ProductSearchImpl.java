@@ -65,8 +65,14 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
 
         this.getQuerydsl().applyPagination(pageable, query);
 
-        query.fetch();
-        query.fetchCount();
+        List<ProductEntity> entityList = query.fetch();
+        long count = query.fetchCount();
+
+        for(ProductEntity entity : entityList) {
+            System.out.println(entity);
+            System.out.println(entity.getImages());
+            System.out.println("-----------------------------");
+        }
 
         return null;
     }
