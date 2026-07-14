@@ -9,4 +9,5 @@ import com.ex3.khg.products.dto.ProductListDTO;
 public interface ProductSearch  {
     Page<ProductListDTO> list(Pageable pageable);
     Page<ProductDTO>  listWithAllImages(Pageable pageable);
+    Page<ProductDTO>  listFetchAllImages(Pageable pageable);
 }
