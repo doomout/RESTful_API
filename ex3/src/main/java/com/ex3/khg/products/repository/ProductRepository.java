@@ -2,6 +2,8 @@ package com.ex3.khg.products.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +26,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, P
     // ProductDTO를 반환하도록 JPQL 쿼리 작성
     @Query("SELECT p FROM ProductEntity p JOIN FETCH p.images pi WHERE p.pno = :pno")
     Optional<ProductDTO> getProductDTO(@Param("pno") Long pno);
+
+    // 검색이 없는 경우의 Fetch Join 
+    @Query("select p from ProductEntity p join fetch p.images pi")
+    Page<ProductDTO> listQuery(Pageable pageable);
 }
