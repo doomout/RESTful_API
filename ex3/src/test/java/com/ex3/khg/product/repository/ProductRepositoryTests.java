@@ -124,4 +124,11 @@ public class ProductRepositoryTests {
             System.out.println(productDTO);
         });
     }
+
+    @Test // Fetch Join 테스트 코드
+    public void testListFetchAllImages() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+
+        Page<ProductDTO> result = productRepository.listFetchAllImages(pageable);
+    }
 }
