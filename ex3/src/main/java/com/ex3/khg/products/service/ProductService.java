@@ -1,13 +1,15 @@
 package com.ex3.khg.products.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.exception.ProductException;
 import com.ex3.khg.products.repository.ProductRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -33,5 +35,17 @@ public class ProductService {
             log.error(e.getMessage());
             throw ProductException.PRODUCT_NOT_REGISTERED.get();
         }
+    }
+
+    @Transactional(readOnly = true)
+    public ProductDTO read(Long pno) {
+        log.info("read..............");
+        log.info(pno);
+
+        Optional<ProductEntity> result = productRepository.getProduct(pno);
+
+        ProductEntity productEntity = result.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
+
+        return new ProductDTO(productEntity);
     }
 }
