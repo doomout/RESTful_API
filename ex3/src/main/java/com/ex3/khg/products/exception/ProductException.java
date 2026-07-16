@@ -1,7 +1,7 @@
 package com.ex3.khg.products.exception;
 
 public enum ProductException {
-    PRODUCT_NOT_ROUND("Product Not Found", 404),
+    PRODUCT_NOT_FOUND("Product Not Found", 404),
     PRODUCT_NOT_REGISTERED("Product Not Registered", 400),
     PRODUCT_NOT_MODIFIED("Product Not Modified", 400),
     PRODUCT_NOT_REMOVED("Product Not Removed", 400),

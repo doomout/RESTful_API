@@ -47,7 +47,7 @@ public class ProductDTO {
                 .content(content)
                 .writer(writer)
                 .build();
-        
+                
         if(imageList == null || imageList.isEmpty()) {
             return productEntity;
         }
