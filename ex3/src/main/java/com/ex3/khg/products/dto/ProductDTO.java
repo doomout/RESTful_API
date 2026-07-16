@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.entity.ProductImage;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDTO {
     private Long pno;
+
+    @NotEmpty
     private String pname;
+    
+    @Min(0)
     private int price;
     private String content;
+    
+    @NotEmpty
     private String writer;
 
     private List<String> imageList; // 이미지 파일 이름 배열
@@ -29,5 +37,23 @@ public class ProductDTO {
                         .stream()
                         .map(ProductImage::getFileName)
                         .collect(Collectors.toList());
+    }
+
+    public ProductEntity toEntity() {
+        ProductEntity productEntity = ProductEntity.builder()
+                .pno(pno)
+                .pname(pname)
+                .price(price)
+                .content(content)
+                .writer(writer)
+                .build();
+        
+        if(imageList == null || imageList.isEmpty()) {
+            return productEntity;
+        }
+
+        imageList.forEach(productEntity::addImage);
+
+        return productEntity;
     }
 }
