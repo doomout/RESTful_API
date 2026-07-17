@@ -1,5 +1,6 @@
 package com.ex3.khg.products.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -61,6 +62,37 @@ public class ProductService {
         }catch(Exception e) {
             log.error(e.getMessage());
             throw ProductException.PRODUCT_NOT_REMOVED.get();
+        }
+    }
+
+    //상품 수정(기존 상품 이미지는 전부 삭제하고 새로운 이미지로 다시 업로드)
+    public ProductDTO modify(ProductDTO productDTO) {
+        log.info("modify..............");
+        log.info(productDTO);
+
+        Optional<ProductEntity> result = productRepository.findById(productDTO.getPno());
+
+        ProductEntity productEntity = result.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
+
+        try {
+            // 상품 정보 수정
+            productEntity.changePrice(productDTO.getPrice());
+            productEntity.changeTitle(productDTO.getPname());
+            
+            // 기존 이미지들 삭제
+            productEntity.clearImages();
+
+            // 새로운 이미지들 추가
+            List<String> fileNames = productDTO.getImageList();
+            if(fileNames != null && !fileNames.isEmpty()) {
+                fileNames.forEach(productEntity::addImage);
+            }
+            productRepository.save(productEntity);
+
+            return new ProductDTO(productEntity);
+        }catch(Exception e) {
+            log.error(e.getMessage());
+            throw ProductException.PRODUCT_NOT_MODIFIED.get();
         }
     }
 }
