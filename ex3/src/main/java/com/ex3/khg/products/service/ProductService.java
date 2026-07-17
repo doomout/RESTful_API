@@ -48,4 +48,19 @@ public class ProductService {
 
         return new ProductDTO(productEntity);
     }
+
+    public void remove(Long pno) {
+        log.info("remove..........");
+        log.info(pno);
+
+        Optional<ProductEntity> result = productRepository.findById(pno);
+        ProductEntity productEntity = result.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
+
+        try{
+            productRepository.delete(productEntity);
+        }catch(Exception e) {
+            log.error(e.getMessage());
+            throw ProductException.PRODUCT_NOT_REMOVED.get();
+        }
+    }
 }
