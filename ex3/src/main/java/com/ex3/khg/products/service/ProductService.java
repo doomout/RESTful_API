@@ -3,10 +3,15 @@ package com.ex3.khg.products.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.products.dto.PageRequestDTO;
 import com.ex3.khg.products.dto.ProductDTO;
+import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.exception.ProductException;
 import com.ex3.khg.products.repository.ProductRepository;
@@ -93,6 +98,21 @@ public class ProductService {
         }catch(Exception e) {
             log.error(e.getMessage());
             throw ProductException.PRODUCT_NOT_MODIFIED.get();
+        }
+    }
+
+    // 상품 목록
+    public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) {
+        log.info("getList.............");
+        log.info(pageRequestDTO);
+
+        try {
+            Pageable pageable = pageRequestDTO.getPageable(Sort.by("pno").descending());
+
+            return productRepository.list(pageable);
+        }catch(Exception e) {
+            log.error(e.getMessage());
+            throw ProductException.PRODUCT_NOT_FETCHED.get();
         }
     }
 }
