@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ex3.khg.products.exception.ProductTaskException;
+
 import lombok.extern.log4j.Log4j2;
 
 @RestControllerAdvice  // 모든 @RestController에서 발생하는 예외를 전역으로 처리
@@ -32,5 +34,16 @@ public class ProductControllerAdvice {
 
         // HTTP 400(Bad Request) 상태와 함께 에러 메시지를 JSON 형태로 반환            
         return ResponseEntity.badRequest().body(Map.of("error", errorMessage));
+    }
+
+    @ExceptionHandler(ProductTaskException.class)
+    public ResponseEntity<Map<String, String>> handleProductTaskException(ProductTaskException e) {
+        log.error("ProductTaskException........");
+        log.error(e.getClass().getName());
+        log.error(e.getMessage());
+
+        int status = e.getCode();
+
+        return ResponseEntity.status(status).body(Map.of("error",e.getMessage()));
     }
 }
