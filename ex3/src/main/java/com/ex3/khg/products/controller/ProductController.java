@@ -13,10 +13,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,4 +73,29 @@ public class ProductController {
         return ResponseEntity.ok(productDTO);
     }
     
+    // 상품 삭제 처리(현재 사용자, admin 권한자만 가능)
+    @DeleteMapping("/{pno}")
+    public ResponseEntity<Map<String, String>> remove(@PathVariable("pno") Long pno, Authentication authentication) {
+        log.info("remove.............");
+        log.info(pno);
+        log.info(authentication.getName());
+        log.info(authentication.getAuthorities());
+
+        ProductDTO productDTO = productService.read(pno);
+
+        if(!productDTO.getWriter().equals(authentication.getName())) {
+            // 현재 사용자의 권한
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            
+            // ADMIN 권한이 없는 경우 예외 발생
+            authorities.stream()
+                    .filter(authority -> authority.getAuthority().equals("ROLE_ADMIN"))
+                    .findAny()
+                    .orElseThrow(ProductException.PRODUCT_WRITER_ERROR::get);
+        }
+
+        productService.remove(pno);
+
+        return ResponseEntity.ok(Map.of("result", "success"));
+    } 
 }
