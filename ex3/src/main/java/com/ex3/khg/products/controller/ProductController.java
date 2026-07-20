@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @Log4j2
@@ -98,4 +100,27 @@ public class ProductController {
 
         return ResponseEntity.ok(Map.of("result", "success"));
     } 
+
+    // 상품 수정 처리
+    @PutMapping("/{pno}")
+    public ResponseEntity<ProductDTO> modify(@PathVariable("pno") Long pno, @RequestBody @Validated ProductDTO productDTO, Authentication authentication) {
+        log.info("modify..............");
+        log.info(pno);
+        log.info(productDTO);
+        log.info(authentication.getName());
+
+        if(!pno.equals(productDTO.getPno())) {
+            throw ProductException.PRODUCT_NOT_FOUND.get();
+        }
+
+        if(productDTO.getImageList() == null || productDTO.getImageList().isEmpty()) {
+            throw ProductException.PRODUCT_NO_IMAGE.get();
+        }
+
+        if(!productDTO.getWriter().equals(authentication.getName())) {
+            throw ProductException.PRODUCT_WRITER_ERROR.get();
+        }
+        
+        return ResponseEntity.ok(productService.modify(productDTO));
+    }
 }
