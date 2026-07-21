@@ -8,11 +8,12 @@ const cookies = new Cookies(null, {path: '/', maxAge: 2592000})
 const beforeRequest = (config) => {
     console.log('beforeRequest')
 
-    const accessToken = cokkies.get("accessToken")
+    const accessToken = cookies.get("accessToken")
     if(!accessToken) {
         throw Error("No Token")
     }
-    config.header["Authorization"] = "Bearer " + accessToken
+    config.headers = config.headers || {}
+    config.headers["Authorization"] = "Bearer " + accessToken
 
     return config
 }
@@ -58,6 +59,6 @@ const errorResponse = (error) => {
 }
 
 jwtAxios.interceptors.request.use(beforeRequest)
-jwtAxios.interceptors.request.use(beforeRequest, errorResponse)
+jwtAxios.interceptors.response.use(beforeResponse, errorResponse)
 
 export default jwtAxios

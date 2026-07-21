@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/v1/samples")
 public class SampleController { // 접근 제한 테스트를 위한 컨트롤러
     //@PreAuthorize("hasRole('ROLE_ADMIN')") // 관리자 권한
-    @PreAuthorize("hasRole('ROLE_USER')") // 일반 유저 권한
+    @PreAuthorize("hasRole('USER')") // 일반 유저 권한
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         log.info("list............");
