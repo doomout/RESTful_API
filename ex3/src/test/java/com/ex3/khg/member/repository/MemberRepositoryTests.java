@@ -38,7 +38,7 @@ public class MemberRepositoryTests {
      
     @Test
     public void testRead() { // 조회 테스트 (실패하고 메세지가 나오는게 정상)
-        String mid = "user"; // 없는 id 
+        String mid = "user1"; // 있는 id 
 
         Optional<MemberEntity> result = memberRepository.findById(mid);
 

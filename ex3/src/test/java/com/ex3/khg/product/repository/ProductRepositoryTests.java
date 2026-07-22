@@ -91,13 +91,13 @@ public class ProductRepositoryTests {
     @Transactional
     @Commit
     public void testDelete() {
-        Long pno = 1L;
+        Long pno = 38L;
         productRepository.deleteById(pno);
     }
 
     @Test // ProductDTO 반환 테스트
     public void testReadDTO() {
-        Long pno = 1L;
+        Long pno = 38L;
         Optional<ProductDTO> result = productRepository.getProductDTO(pno);
         ProductDTO productDTO = result.get();
 
