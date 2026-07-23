@@ -42,4 +42,15 @@ public class ReviewRepositoryTests {
             System.out.println(reviewEntity.getProductEntity());
         });
     }
+
+    // fetch join 방식으로 리뷰, 상품 까지 나오는지 테스트
+    @Test
+    public void testGetWithProduct() {
+        Long rno = 36L; // 리뷰가 있는 상품 번호
+
+        reviewRepository.getWithProdcut(rno).ifPresent(reviewEntity -> {
+            System.out.println(reviewEntity);
+            System.out.println(reviewEntity.getProductEntity());
+        });
+    }
 }
