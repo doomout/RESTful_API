@@ -59,4 +59,14 @@ public class ReviewEntity {
     // Entity가 수정될 때마다 현재 시간이 자동 저장
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    // 수정 가능한 리뷰의 내용
+    public void changeReviewText(String reviewText) {
+        this.reviewText = reviewText;
+    }
+
+    // 점수 부분
+    public void changeScore(int score) {
+        this.score = score;
+    }
 }
