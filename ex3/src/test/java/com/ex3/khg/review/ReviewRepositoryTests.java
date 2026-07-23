@@ -2,8 +2,6 @@ package com.ex3.khg.review;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +10,8 @@ import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.review.entity.ReviewEntity;
 import com.ex3.khg.review.repository.ReviewRepository;
 
-//@SpringBootTest
-@DataJpaTest
+@SpringBootTest
+//@DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class ReviewRepositoryTests {
     @Autowired
