@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +12,8 @@ import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.review.entity.ReviewEntity;
 import com.ex3.khg.review.repository.ReviewRepository;
 
+//@SpringBootTest
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class ReviewRepositoryTests {
     @Autowired
@@ -32,5 +33,15 @@ public class ReviewRepositoryTests {
             .build();
 
         reviewRepository.save(reviewEntity);
+    }
+    // 리뷰 조회 테스트
+    @Test
+    @Transactional
+    public void testRead() {
+        Long rno = 36L;
+        reviewRepository.findById(rno).ifPresent(reviewEntity -> {
+            System.out.println(reviewEntity);
+            System.out.println(reviewEntity.getProductEntity());
+        });
     }
 }
