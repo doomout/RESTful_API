@@ -1,8 +1,10 @@
 package com.ex3.khg.review;
 
+import org.hibernate.annotations.Comment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,5 +55,15 @@ public class ReviewRepositoryTests {
             System.out.println(reviewEntity.getProductEntity());
             System.out.println(reviewEntity.getProductEntity().getImages()); // 상품 이미지도 출력
         });
+    }
+
+    // 리뷰 삭제 테스트
+    @Test
+    @Transactional
+    @Commit
+    public void testRemove() {
+        Long rno = 36L;
+
+        reviewRepository.deleteById(rno);
     }
 }
