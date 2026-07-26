@@ -3,7 +3,9 @@ package com.ex3.khg.review.exception;
 public enum ReviewException {
     REVIEW_NOT_REGISTERED("Review Not Registere", 400),
     REVIEW_PRODUCT_NOT_FOUND("Product Not Found for Review", 404),
-    REVIEW_NOT_FOUND("Revidw Not Found", 404);
+    REVIEW_NOT_FOUND("Revidw Not Found", 404),
+    REVIEW_NOT_MODIFIED("Review Not modified", 400),
+    REVIEW_NOT_REMOVED("Review Not Removed", 400);
 
     private final ReviewTaskException reviewTaskException;
 
