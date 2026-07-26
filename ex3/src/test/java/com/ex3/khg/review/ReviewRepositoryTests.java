@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.review.entity.ReviewEntity;
+import com.ex3.khg.review.exception.ReviewException;
 import com.ex3.khg.review.repository.ReviewRepository;
 
 @SpringBootTest
@@ -65,5 +66,15 @@ public class ReviewRepositoryTests {
         Long rno = 36L;
 
         reviewRepository.deleteById(rno);
+    }
+
+    // 리뷰 삭제 후 해당 리뷰가 존재하는지 체크하는 테스트
+    @Test
+    @Transactional
+    @Commit
+    public void testRemove2() {
+        ReviewEntity reviewEntity = reviewRepository.findById(36L).orElseThrow(ReviewException.REVIEW_NOT_FOUND::get);
+
+        reviewRepository.delete(reviewEntity);
     }
 }
