@@ -77,4 +77,17 @@ public class ReviewRepositoryTests {
 
         reviewRepository.delete(reviewEntity);
     }
+
+    // 리뷰 수정
+    @Test
+    @Transactional
+    @Commit
+    public void testUpdate() {
+        Long rno = 36L;
+
+        ReviewEntity reviewEntity = reviewRepository.findById(rno).orElseThrow(ReviewException.REVIEW_NOT_FOUND::get);
+
+        reviewEntity.changeReviewText("변경된 리뷰 내용");
+        reviewEntity.changeScore(3);
+    }
 }
