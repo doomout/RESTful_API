@@ -3,6 +3,7 @@ package com.ex3.khg.review;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,9 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
+import com.ex3.khg.products.repository.ProductRepository;
 import com.ex3.khg.review.entity.ReviewEntity;
 import com.ex3.khg.review.exception.ReviewException;
 import com.ex3.khg.review.repository.ReviewRepository;
@@ -21,6 +24,9 @@ import com.ex3.khg.review.repository.ReviewRepository;
 public class ReviewRepositoryTests {
     @Autowired
     private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private ProductRepository productRepository;
 
     // 리뷰 등록 테스트
     @Test
@@ -104,5 +110,16 @@ public class ReviewRepositoryTests {
             .forEach(reviewDTO -> {
                 System.out.println(reviewDTO);
             });
+    }
+
+    // 리뷰 카운트 테스트
+    @Test
+    public void testListWithReviewCount() {
+        Pageable pageable = PageRequest.of(0,10, Sort.by("pno").descending());
+        Page<ProductListDTO> result = productRepository.listWithReviewCount(pageable);
+
+        result.getContent().forEach(productListDTO -> {
+            System.out.println(productListDTO);
+        });
     }
 }
