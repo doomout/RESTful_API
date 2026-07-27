@@ -27,6 +27,9 @@ public class ProductDTO {
     private String writer;
 
     private List<String> imageList; // 이미지 파일 이름 배열
+
+    private Long reviewCount; // 리뷰 숫자
+
     public ProductDTO(ProductEntity productEntity) {
         this.pno = productEntity.getPno();
         this.pname = productEntity.getPname();
