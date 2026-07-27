@@ -1,9 +1,11 @@
 package com.ex3.khg.review;
 
-import org.hibernate.annotations.Comment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,5 +91,18 @@ public class ReviewRepositoryTests {
 
         reviewEntity.changeReviewText("변경된 리뷰 내용");
         reviewEntity.changeScore(3);
+    }
+
+    // 리뷰 목록
+    @Test
+    public void testList() {
+        Long pno = 36L;
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("rno").descending());
+
+        reviewRepository.getListByPno(pno, pageable).getContent()
+            .forEach(reviewDTO -> {
+                System.out.println(reviewDTO);
+            });
     }
 }
