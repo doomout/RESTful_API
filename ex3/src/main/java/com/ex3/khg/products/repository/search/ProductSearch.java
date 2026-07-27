@@ -10,4 +10,6 @@ public interface ProductSearch  {
     Page<ProductListDTO> list(Pageable pageable);
     Page<ProductDTO>  listWithAllImages(Pageable pageable);
     Page<ProductDTO>  listFetchAllImages(Pageable pageable);
+
+    Page<ProductListDTO> listWithReviewCount(Pageable pageable); // 리뷰의 개수
 }
