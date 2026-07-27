@@ -12,6 +12,8 @@ import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.entity.QProductEntity;
 import com.ex3.khg.products.entity.QProductImage;
+import com.ex3.khg.review.entity.QReviewEntity;
+
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 
@@ -104,6 +106,39 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         //     System.out.println("-----------------------------");
         // }
 
+        return new PageImpl<>(dtoList, pageable, count);
+    }
+
+    @Override
+    public Page<ProductListDTO> listWithReviewCount(Pageable pageable) {
+        QProductEntity productEntity = QProductEntity.productEntity;
+        QProductImage productImage = QProductImage.productImage;
+        QReviewEntity reviewEntity = QReviewEntity.reviewEntity;
+
+        JPQLQuery<ProductEntity> query = from(productEntity);
+        query.leftJoin(reviewEntity).on(reviewEntity.productEntity.eq(productEntity));
+        query.leftJoin(productEntity.images, productImage);
+
+        query.where(productImage.idx.eq(0));
+
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        query.groupBy(productEntity);
+
+        JPQLQuery<ProductListDTO> dtojpqlQuery = query.select(
+            Projections.bean(ProductListDTO.class,
+                productEntity.pno,
+                productEntity.pname,
+                productEntity.price,
+                productEntity.writer,
+                productImage.fileName.as("productImage"),
+                reviewEntity.countDistinct().as("reviewCount")
+        ));
+
+        this.getQuerydsl().applyPagination(pageable, dtojpqlQuery);
+        List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
+
+        long count = dtojpqlQuery.fetchCount();
         return new PageImpl<>(dtoList, pageable, count);
     }
 }
