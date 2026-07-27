@@ -2,10 +2,13 @@ package com.ex3.khg.review.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.ex3.khg.review.dto.ReviewDTO;
 import com.ex3.khg.review.entity.ReviewEntity;
 
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>{
@@ -16,4 +19,8 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>{
             " join fetch rp.images " + 
             " where r.rno = :rno")
     Optional<ReviewEntity> getWithProdcut(@Param("rno") Long rno);
+
+    //ProductEntity 의 번호를 이용해서 리뷰 목록을 찾는 기능
+    @Query("select r from ReviewEntity r where r.productEntity.pno = :pno")
+    Page<ReviewDTO> getListByPno(@Param("pno") Long pno, Pageable pageable);
 }
