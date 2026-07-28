@@ -7,13 +7,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+
 import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.entity.QProductEntity;
 import com.ex3.khg.products.entity.QProductImage;
 import com.ex3.khg.review.entity.QReviewEntity;
-
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 
@@ -116,15 +117,21 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         QReviewEntity reviewEntity = QReviewEntity.reviewEntity;
 
         JPQLQuery<ProductEntity> query = from(productEntity);
+
+        // 리뷰 테이블과 LEFT JOIN (상품에 리뷰가 없어도 상품은 조회)
         query.leftJoin(reviewEntity).on(reviewEntity.productEntity.eq(productEntity));
+        // 이미지도 LEFT JOIN
         query.leftJoin(productEntity.images, productImage);
 
+        // 대표 이미지만 사용
         query.where(productImage.idx.eq(0));
 
         this.getQuerydsl().applyPagination(pageable, query);
 
+        // 그룹핑 필요 (집계함수 사용 시)
         query.groupBy(productEntity);
 
+        // Projection으로 필요한 필드와 리뷰 개수를 매핑
         JPQLQuery<ProductListDTO> dtojpqlQuery = query.select(
             Projections.bean(ProductListDTO.class,
                 productEntity.pno,
@@ -135,10 +142,45 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 reviewEntity.countDistinct().as("reviewCount")
         ));
 
+        // 페이징 적용 후 조회
         this.getQuerydsl().applyPagination(pageable, dtojpqlQuery);
         List<ProductListDTO> dtoList = dtojpqlQuery.fetch();
 
         long count = dtojpqlQuery.fetchCount();
         return new PageImpl<>(dtoList, pageable, count);
+    }
+
+    @Override
+    public Page<ProductDTO> listWithAllImagesReviewCount(Pageable pageable) {
+        QProductEntity productEntity = QProductEntity.productEntity;
+        QReviewEntity reviewEntity = QReviewEntity.reviewEntity;
+
+        // ProductEntity 기준 쿼리 생성
+        JPQLQuery<ProductEntity> query = from(productEntity);
+        // 리뷰와 LEFT JOIN (상품별 리뷰 수 집계용)
+        query.leftJoin(reviewEntity).on(reviewEntity.productEntity.eq(productEntity));
+
+        // 페이징과 그룹핑 적용 (집계 필요)
+        this.getQuerydsl().applyPagination(pageable, query);
+        query.groupBy(productEntity);
+
+        // ProductEntity와 리뷰 카운트를 함께 조회 (Tuple 사용)
+        JPQLQuery<Tuple> tupleJPQLQuery = query.select(productEntity, reviewEntity.countDistinct());
+
+        List<Tuple> result = tupleJPQLQuery.fetch();
+
+        // Tuple을 ProductDTO로 변환하여 리뷰 개수를 DTO에 설정
+        List<ProductDTO> dtoList = result.stream().map(tuple -> {
+            ProductEntity product = tuple.get(0, ProductEntity.class);
+            long count = tuple.get(1, Long.class);
+
+            ProductDTO dto = new ProductDTO(product);
+            dto.setReviewCount(count);
+
+            return dto;
+        }).toList();
+
+        // 페이징 결과 반환
+        return new PageImpl<>(dtoList, pageable, tupleJPQLQuery.fetchCount());
     }
 }
