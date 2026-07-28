@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.products.dto.ProductDTO;
 import com.ex3.khg.products.dto.ProductListDTO;
 import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.repository.ProductRepository;
@@ -120,6 +121,17 @@ public class ReviewRepositoryTests {
 
         result.getContent().forEach(productListDTO -> {
             System.out.println(productListDTO);
+        });
+    }
+    // 상품 모든 이미지+리뷰 카운트 테스트
+    @Test
+    @Transactional
+    public void testlistWithAllImagesReviewCount() {
+        Pageable pageable = PageRequest.of(0,10, Sort.by("pno").descending());
+        Page<ProductDTO> result = productRepository.listWithAllImagesReviewCount(pageable);
+
+        result.getContent().forEach(productDTO -> {
+            System.out.println(productDTO);
         });
     }
 }
