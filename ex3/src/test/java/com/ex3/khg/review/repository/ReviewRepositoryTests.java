@@ -1,4 +1,4 @@
-package com.ex3.khg.review;
+package com.ex3.khg.review.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
