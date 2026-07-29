@@ -44,4 +44,16 @@ public class ReviewService {
 
         return new ReviewDTO(reviewEntity);
     }
+
+    // 리뷰 삭제
+    public void remove(Long rno) {
+        ReviewEntity reviewEntity = reviewRepository.findById(rno).orElseThrow(ReviewException.REVIEW_NOT_FOUND::get);
+
+        try {
+            reviewRepository.delete(reviewEntity);
+        }catch(Exception e) {
+            log.error(e.getMessage());
+            throw ReviewException.REVIEW_NOT_REMOVED.get();
+        }
+    }
 }
