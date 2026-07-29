@@ -37,4 +37,11 @@ public class ReviewService {
             throw ReviewException.REVIEW_NOT_REGISTERED.get();
         }
     }
+
+    // 리뷰 조회
+    public ReviewDTO read(Long rno) {
+        ReviewEntity reviewEntity = reviewRepository.findById(rno).orElseThrow(ReviewException.REVIEW_NOT_FOUND::get);
+
+        return new ReviewDTO(reviewEntity);
+    }
 }
