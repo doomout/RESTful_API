@@ -56,4 +56,19 @@ public class ReviewService {
             throw ReviewException.REVIEW_NOT_REMOVED.get();
         }
     }
+
+    // 리뷰 수정
+    public ReviewDTO modify(ReviewDTO reviewDTO) {
+        ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getRno()).orElseThrow(ReviewException.REVIEW_NOT_FOUND::get);
+
+        try {
+            reviewEntity.changeReviewText(reviewDTO.getReviewText());
+            reviewEntity.changeScore(reviewDTO.getScore());
+
+            return new ReviewDTO(reviewEntity);
+        }catch(Exception e) {
+            log.error(e.getMessage());
+            throw ReviewException.REVIEW_NOT_MODIFIED.get();
+        }
+    }
 }
