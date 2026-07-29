@@ -1,10 +1,14 @@
 package com.ex3.khg.review.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ex3.khg.review.dto.ReviewDTO;
+import com.ex3.khg.review.dto.ReviewPageRequestDTO;
 import com.ex3.khg.review.entity.ReviewEntity;
 import com.ex3.khg.review.exception.ReviewException;
 import com.ex3.khg.review.repository.ReviewRepository;
@@ -70,5 +74,13 @@ public class ReviewService {
             log.error(e.getMessage());
             throw ReviewException.REVIEW_NOT_MODIFIED.get();
         }
+    }
+
+    // 리뷰 목록
+    public Page<ReviewDTO> getList(ReviewPageRequestDTO reviewPageRequestDTO) {
+        Long pno = reviewPageRequestDTO.getPno();
+        Pageable pageable = reviewPageRequestDTO.getPageable(Sort.by("rno").descending()); 
+
+        return reviewRepository.getListByPno(pno, pageable);
     }
 }

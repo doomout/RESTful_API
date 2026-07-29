@@ -26,7 +26,7 @@ public class ReviewPageRequestDTO {
     private int size = 20;
 
     private Long pno;
-    public Pageable getpageavle(Sort sort) {
+    public Pageable getPageable(Sort sort) {
         return PageRequest.of(page - 1, size, sort);
     }
 }
