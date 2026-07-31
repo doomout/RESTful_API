@@ -5,7 +5,8 @@ public enum ReviewException {
     REVIEW_PRODUCT_NOT_FOUND("Product Not Found for Review", 404),
     REVIEW_NOT_FOUND("Revidw Not Found", 404),
     REVIEW_NOT_MODIFIED("Review Not modified", 400),
-    REVIEW_NOT_REMOVED("Review Not Removed", 400);
+    REVIEW_NOT_REMOVED("Review Not Removed", 400),
+    REVIEW_MISMATCH("Reviewer Mismatch", 400);
 
     private final ReviewTaskException reviewTaskException;
 
