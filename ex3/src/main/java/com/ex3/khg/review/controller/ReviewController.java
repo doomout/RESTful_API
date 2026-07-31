@@ -15,6 +15,9 @@ import com.ex3.khg.review.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @Log4j2
@@ -32,4 +35,13 @@ public class ReviewController {
         }
         return ResponseEntity.ok(reviewService.register(reviewDTO));
     }
+
+    // 리뷰 조회 처리
+    @GetMapping("/{rno}")
+    public ResponseEntity<ReviewDTO> read(@PathVariable("rno") Long rno) {
+        log.info("read: " + rno);
+        
+        return ResponseEntity.ok(reviewService.read(rno));
+    }
+    
 }
