@@ -1,8 +1,11 @@
 package com.ex3.khg.review.controller;
 
 import java.security.Principal;
+import java.util.Map;
+
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +18,8 @@ import com.ex3.khg.review.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -42,6 +47,22 @@ public class ReviewController {
         log.info("read: " + rno);
         
         return ResponseEntity.ok(reviewService.read(rno));
+    }
+
+    // 리뷰 삭제 처리
+    @DeleteMapping("/{rno}")
+    public ResponseEntity<Map<String, String>> remove(@PathVariable("rno") Long rno, Authentication authentication) {
+        log.info("remove: "+ rno);
+        String currentUser = authentication.getName();
+        log.info("currentUser: " + currentUser);
+        ReviewDTO reviewDTO = reviewService.read(rno);
+
+        if(!currentUser.equals(reviewDTO.getReviewer())) {
+            throw ReviewException.REVIEW_MISMATCH.get();
+        }
+        reviewService.remove(rno);
+
+        return ResponseEntity.ok().body(Map.of("result", "success"));
     }
     
 }
