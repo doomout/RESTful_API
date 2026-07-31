@@ -2,14 +2,14 @@ package com.ex3.khg.support;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.ex3.khg.member.security.util.JWTUtil;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestTokenHelper {
 
