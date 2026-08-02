@@ -3,7 +3,6 @@ package com.ex3.khg.review.controller;
 import java.security.Principal;
 import java.util.Map;
 
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ex3.khg.review.dto.ReviewDTO;
+import com.ex3.khg.review.dto.ReviewPageRequestDTO;
 import com.ex3.khg.review.exception.ReviewException;
 import com.ex3.khg.review.service.ReviewService;
 
@@ -23,21 +23,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.cors.CorsConfigurationSource;
-
-
 
 @RestController
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {
-    private final CorsConfigurationSource configurationSource;
     private final ReviewService reviewService;
-
-    ReviewController(CorsConfigurationSource configurationSource) {
-        this.configurationSource = configurationSource;
-    }
+    private final ReviewPageRequestDTO pageRequestDTO;
 
     // 리뷰 등록 처리
     @PostMapping("")
@@ -89,5 +82,13 @@ public class ReviewController {
         }
 
         return ResponseEntity.ok().body(reviewService.modify(reviewDTO));
+    }
+
+    // 리뷰 목록 처리
+    @GetMapping("/{pno}/list")
+    public ResponseEntity<?> list(@PathVariable("pno") Long pno, @Validated ReviewPageRequestDTO reviewPageRequestDTO) {
+        pageRequestDTO.setPno(pno);
+        
+        return ResponseEntity.ok().body(reviewService.getList(pageRequestDTO));
     }
 }
