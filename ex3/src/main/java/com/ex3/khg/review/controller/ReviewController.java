@@ -22,6 +22,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.cors.CorsConfigurationSource;
+
 
 
 @RestController
@@ -29,7 +32,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {
+    private final CorsConfigurationSource configurationSource;
     private final ReviewService reviewService;
+
+    ReviewController(CorsConfigurationSource configurationSource) {
+        this.configurationSource = configurationSource;
+    }
 
     // 리뷰 등록 처리
     @PostMapping("")
@@ -64,5 +72,22 @@ public class ReviewController {
 
         return ResponseEntity.ok().body(Map.of("result", "success"));
     }
-    
+
+    // 리뷰 수정 처리  
+    @PutMapping("/{rno}")
+    public ResponseEntity<ReviewDTO> modify(@PathVariable("rno") Long rno, @RequestBody ReviewDTO reviewDTO, Authentication authentication) {
+        log.info("modify: " + rno);
+        // 번호 체크
+        if(!rno.equals(reviewDTO.getRno())) {
+            throw ReviewException.REVIEW_NOT_MATCHED.get();
+        }
+        String currentUser = authentication.getName();
+        log.info("currentUser: " + currentUser);
+
+        if(!currentUser.equals(reviewDTO.getReviewer())) {
+            throw ReviewException.REVIEW_MISMATCH.get();
+        }
+
+        return ResponseEntity.ok().body(reviewService.modify(reviewDTO));
+    }
 }
