@@ -1,5 +1,6 @@
 package com.ex3.khg.cart.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -49,5 +50,22 @@ public class CartRepositoryTests {
                 .build();
 
         cartItemRepository.save(cartItemEntity);
+    }
+
+    // 장바구니 조회 테스트(페치 조인)
+    @Test
+    public void testRead() {
+        String mid = "user22";
+
+        Optional<List<CartItemEntity>> result = cartItemRepository.getCartItemsOfHolder(mid);
+
+        List<CartItemEntity> cartItemEntityList = result.orElse(null);
+
+        cartItemEntityList.forEach(cartItemEntity -> {
+            System.out.println(cartItemEntity);
+            System.out.println(cartItemEntity.getProduct());
+            System.out.println(cartItemEntity.getProduct().getImages());
+            System.out.println("--------------------------------------------------");
+        });
     }
 }
