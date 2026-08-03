@@ -17,4 +17,13 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
            " where c.cart.holder = :holder " +
            " order by c.itemNo desc")
     Optional<List<CartItemEntity>> getCartItemsOfHolder(@Param("holder") String holder);
+
+    // 직접 join 을 이용한 장바구니 아이템 메서드
+    @Query("select c, p, pi from CartItemEntity c" +
+           " join c.product p" +
+           " join c.product.images pi" +
+           " where c.cart.holder = :holder " +
+           " and pi.idx = 0 " +
+           " order by c.itemNo desc")
+    List<Object[]> getCartItemsOfHolder2(@Param("holder") String holder);
 }
