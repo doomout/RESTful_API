@@ -68,4 +68,19 @@ public class CartRepositoryTests {
             System.out.println("--------------------------------------------------");
         });
     }
+
+    // 장바구니 조회 테스트(직접 join)
+    @Test
+    public void testRead2() {
+        String mid = "user22";
+
+        List<Object[]> result = cartItemRepository.getCartItemsOfHolder2(mid);
+
+        result.forEach(arr -> {
+            System.out.println(arr[0]);
+            System.out.println(arr[1]);
+            System.out.println(arr[2]);
+            System.out.println("--------------------------------------------------");
+        });
+    }
 }
