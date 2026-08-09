@@ -83,4 +83,23 @@ public class CartRepositoryTests {
             System.out.println("--------------------------------------------------");
         });
     }
+
+    // 장바구니 수정/삭제 테스트
+    @Transactional
+    @Test   
+    @Commit
+    public void testModifyCartItem() {
+        Long itemNo = 1L;
+        int qty = 0;
+
+        Optional<CartItemEntity> result = cartItemRepository.findById(itemNo);
+
+        CartItemEntity cartItemEntity = result.get();
+
+        cartItemEntity.changeQuantity(qty);
+
+        if(cartItemEntity.getQuantity() <= 0) {
+            cartItemRepository.delete(cartItemEntity);
+        }
+    }
 }
