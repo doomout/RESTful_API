@@ -1,4 +1,4 @@
-HELP.md
+﻿HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -36,5 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
+### Local environment files ###
+.env
+
+### Frontend ###
+ex_frontEnd/node_modules/
+
 ### Database ###
 /src/main/resources/application.properties
+bin/main/application.properties

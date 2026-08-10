@@ -40,9 +40,7 @@ public class TokenController {
         Map<String, Object> dataMap =  memberDTOResult.getDataMap();
         String accessToken = jwtUtil.createToken(dataMap, 10);
         String refreshToken = jwtUtil.createToken(Map.of("mid", mid), 60 * 24 * 7);
-        log.info("accessToken: " + accessToken);
-        log.info("refreshToken: " + refreshToken);
-        
+
         return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken));
     }
 

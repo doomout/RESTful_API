@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -18,15 +19,8 @@ import lombok.extern.log4j.Log4j2;
 @Component
 @Log4j2
 public class JWTUtil {
-    /*
-     * JWT 서명(Signature)에 사용할 비밀키
-     * JWT 구조:
-     * Header.Payload.Signature
-     * Signature 생성 시 이 key 사용
-     * ※ 실제 서비스에서는 코드에 직접 쓰면 안 되고
-     * application.properties, 환경변수 등에 보관
-     */
-    private static String key = "1234567890123456789012345678901234567890";
+    @Value("${jwt.secret:change_this_jwt_secret_to_a_long_secret}")
+    private String key;
     /*
      * JWT 토큰 생성 메서드
      * valueMap : 토큰 안에 넣을 데이터
@@ -38,7 +32,7 @@ public class JWTUtil {
 
 
         // JWT 서명에 사용할 암호화 키 객체
-        SecretKey key = null;
+        SecretKey secretKey = null;
 
 
         try {
@@ -49,8 +43,8 @@ public class JWTUtil {
              *
              * HS256 서명할 때 필요
              */
-            key = Keys.hmacShaKeyFor(
-                    JWTUtil.key.getBytes("UTF-8")
+            secretKey = Keys.hmacShaKeyFor(
+                    this.key.getBytes("UTF-8")
             );
         } catch (Exception e) {
             // 키 생성 실패 시 RuntimeException 발생
@@ -110,7 +104,7 @@ public class JWTUtil {
              * 이걸 이용해서 나중에
              * 위조 여부 검사
              */
-            .signWith(key)
+            .signWith(secretKey)
 
             /*
              * 최종 문자열 JWT 생성
@@ -131,15 +125,15 @@ public class JWTUtil {
      * 확인
      */
     public Map<String, Object> validateToken(String token) {
-        SecretKey key = null;
+        SecretKey secretKey = null;
 
         try {
             /*
              * 생성 때 사용했던 것과
              * 동일한 SecretKey 생성
              */
-            key = Keys.hmacShaKeyFor(
-                    JWTUtil.key.getBytes("UTF-8")
+            secretKey = Keys.hmacShaKeyFor(
+                    this.key.getBytes("UTF-8")
             );
         } catch (Exception e) {
 
@@ -152,15 +146,15 @@ public class JWTUtil {
              *
              * 생성 때 사용한 key와 다르면 실패
              */
-            .verifyWith(key)
+            .setSigningKey(secretKey)
 
             // parser 생성 완료
             .build()
 
             // JWT 검증 실행
-            .parseSignedClaims(token)
+            .parseClaimsJws(token)
             // Payload 부분 가져오기
-            .getPayload();
+            .getBody();
 
         // Payload 출력
         log.info("claims: " + claims);
