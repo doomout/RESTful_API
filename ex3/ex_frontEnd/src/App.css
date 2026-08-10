@@ -1,0 +1,145 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background: #f5f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body, html, #root {
+  margin: 0;
+  min-height: 100%;
+}
+
+.app-shell {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 24px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+header p {
+  margin: 8px 0 0;
+  color: #555;
+}
+
+.login-shell,
+.product-list {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.login-shell h2 {
+  margin-top: 0;
+}
+
+.login-shell form {
+  display: grid;
+  gap: 16px;
+}
+
+.login-shell label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.login-shell input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.login-shell button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #2f6fed;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-shell button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.toolbar button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #f15a59;
+  color: #fff;
+  cursor: pointer;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-controls button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.product-card {
+  border: 1px solid #e6e9ee;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.product-info h3 {
+  margin: 0 0 10px;
+}
+
+.product-info p {
+  margin: 0 0 14px;
+  color: #555;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.message {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff8c6;
+  color: #4e3f00;
+  border: 1px solid #f1e5a1;
+}
