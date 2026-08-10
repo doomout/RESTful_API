@@ -1,5 +1,6 @@
 package com.ex3.khg.cart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,32 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
 
+    @Transactional(readOnly = true)
     public List<CartItemDTO> getAllItems(String mid) {
-        Optional<List<CartItemEntity>> cartItems = cartItemRepository.getCartItemsOfHolder(mid);
-        return null;
+        List<CartItemDTO> itemDTOList = new ArrayList<>();
+
+        Optional<List<CartItemEntity>> result = cartItemRepository.getCartItemsOfHolder(mid);
+
+        if(result.isEmpty()) {
+            return itemDTOList;    
+        }
+        List<CartItemEntity> cartItemEntityList = result.get();
+
+        cartItemEntityList.forEach(cartItemEntity -> {
+            itemDTOList.add(entityToDTO(cartItemEntity));
+        });
+
+        return itemDTOList;
+    }
+
+    private CartItemDTO entityToDTO(CartItemEntity cartItemEntity) {
+        return CartItemDTO.builder()
+                .itemNo(cartItemEntity.getItemNo())
+                .pname(cartItemEntity.getProduct().getPname())
+                .pno(cartItemEntity.getProduct().getPno())
+                .price(cartItemEntity.getProduct().getPrice())
+                .image(cartItemEntity.getProduct().getImages().first().getFileName())
+                .quantity(cartItemEntity.getQuantity())
+                .build();
     }
 }
