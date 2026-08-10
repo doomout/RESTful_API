@@ -1,8 +1,13 @@
 package com.ex3.khg.cart.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.cart.dto.CartItemDTO;
+import com.ex3.khg.cart.entity.CartItemEntity;
 import com.ex3.khg.cart.repository.CartItemRepository;
 import com.ex3.khg.cart.repository.CartRepository;
 import com.ex3.khg.products.repository.ProductRepository;
@@ -18,4 +23,9 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+
+    public List<CartItemDTO> getAllItems(String mid) {
+        Optional<List<CartItemEntity>> cartItems = cartItemRepository.getCartItemsOfHolder(mid);
+        return null;
+    }
 }
