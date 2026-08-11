@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
-    private final ReviewPageRequestDTO pageRequestDTO;
 
     // 리뷰 등록 처리
     @PostMapping("")
@@ -87,8 +86,8 @@ public class ReviewController {
     // 리뷰 목록 처리
     @GetMapping("/{pno}/list")
     public ResponseEntity<?> list(@PathVariable("pno") Long pno, @Validated ReviewPageRequestDTO reviewPageRequestDTO) {
-        pageRequestDTO.setPno(pno);
+        reviewPageRequestDTO.setPno(pno);
         
-        return ResponseEntity.ok().body(reviewService.getList(pageRequestDTO));
+        return ResponseEntity.ok().body(reviewService.getList(reviewPageRequestDTO));
     }
 }
