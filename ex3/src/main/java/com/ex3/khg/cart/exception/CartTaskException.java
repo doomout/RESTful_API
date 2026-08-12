@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class CartTaskException {
+public class CartTaskException extends RuntimeException {
     private String message;
     private int status;
 
@@ -32,7 +32,7 @@ public class CartTaskException {
             this.status = status;
         }
 
-        public CartTaskException toException() {
+        public CartTaskException value() {
             return new CartTaskException(this.message, this.status);
         }
     }
