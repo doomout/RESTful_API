@@ -7,10 +7,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex3.khg.cart.dto.AddCartItemDTO;
 import com.ex3.khg.cart.dto.CartItemDTO;
+import com.ex3.khg.cart.entity.CartEntity;
 import com.ex3.khg.cart.entity.CartItemEntity;
+import com.ex3.khg.cart.exception.CartTaskException;
 import com.ex3.khg.cart.repository.CartItemRepository;
 import com.ex3.khg.cart.repository.CartRepository;
+import com.ex3.khg.products.entity.ProductEntity;
 import com.ex3.khg.products.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -52,5 +56,37 @@ public class CartService {
                 .image(cartItemEntity.getProduct().getImages().first().getFileName())
                 .quantity(cartItemEntity.getQuantity())
                 .build();
+    }
+
+    // 카트 등록
+    public void registerItem(AddCartItemDTO addCartItemDTO) {
+        String mid = addCartItemDTO.getHolder();
+        Long pno = addCartItemDTO.getPno();
+        int quantity = addCartItemDTO.getQuantity();
+
+        Optional<CartEntity> cartResult = cartRepository.findByHolder(mid);
+
+        CartEntity cartEntity = cartResult.orElseGet(() -> {
+            CartEntity cart = CartEntity.builder().holder(mid).build();
+
+            return cartRepository.save(cart);
+        });
+        // 상품 정보 조회
+        ProductEntity productEntity = productRepository.findById(pno).orElseThrow(CartTaskException.Items.NOT_FOUND_PRODUCT::value);
+
+        // 카트 아이템 생성
+        CartItemEntity cartItemEntity = CartItemEntity.builder()
+                .cart(cartEntity)
+                .product(productEntity)
+                .quantity(quantity)
+                .build();
+
+        try {        
+            // 카트 아이템 저장
+            cartItemRepository.save(cartItemEntity);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw CartTaskException.Items.CART_ITEM_REGISTER_FAIL.value();
+        }
     }
 }
