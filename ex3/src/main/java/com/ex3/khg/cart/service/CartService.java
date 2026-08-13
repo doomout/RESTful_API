@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ex3.khg.cart.dto.AddCartItemDTO;
 import com.ex3.khg.cart.dto.CartItemDTO;
+import com.ex3.khg.cart.dto.ModifyCartItemDTO;
 import com.ex3.khg.cart.entity.CartEntity;
 import com.ex3.khg.cart.entity.CartItemEntity;
 import com.ex3.khg.cart.exception.CartTaskException;
@@ -88,5 +89,26 @@ public class CartService {
             log.error(e.getMessage());
             throw CartTaskException.Items.CART_ITEM_REGISTER_FAIL.value();
         }
+    }
+
+    // 카트 아이템 수정
+    public void modifyItem(ModifyCartItemDTO modifyCartItemDTO) {
+        Long itemNo = modifyCartItemDTO.getItemNo();
+        int quantity = modifyCartItemDTO.getQuantity();
+
+        Optional<CartItemEntity> result = cartItemRepository.findById(itemNo);
+
+        if(result.isEmpty()) {
+            throw CartTaskException.Items.NOT_FOUND_CARTITEM.value();
+        }
+
+        CartItemEntity cartItemEntity = result.get();
+
+        if(quantity <= 0 ) {
+            cartItemRepository.delete(cartItemEntity);
+            return;
+        }
+
+        cartItemEntity.changeQuantity(quantity);
     }
 }
