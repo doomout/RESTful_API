@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ex3.khg.cart.dto.AddCartItemDTO;
 import com.ex3.khg.cart.dto.CartItemDTO;
+import com.ex3.khg.cart.dto.ModifyCartItemDTO;
 
 @SpringBootTest
 public class CartServiceTests {
@@ -38,5 +39,18 @@ public class CartServiceTests {
                 .build();
 
         cartService.registerItem(addCartItemDTO);
+    }
+
+    @Test
+    public void testModifyItem() { // 장바구니 아이템 수량 수정 테스트
+        Long itemNo = 2L;
+        int qty = 1;
+
+        ModifyCartItemDTO modifyCartItemDTO = ModifyCartItemDTO.builder()
+                .itemNo(itemNo)
+                .quantity(qty)
+                .build();
+
+        cartService.modifyItem(modifyCartItemDTO);
     }
 }
