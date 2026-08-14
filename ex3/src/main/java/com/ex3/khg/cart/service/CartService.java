@@ -113,7 +113,7 @@ public class CartService {
     }
 
     // 카트 아이템 소유주 확인
-    public void checkCartItemOwner(String holder, Long itemNo) {
+    public void checkItemHolder(String holder, Long itemNo) {
         Optional<String> result = cartItemRepository.getHolderOfCartItem(itemNo);
 
         if(result.isEmpty()) {
@@ -122,6 +122,15 @@ public class CartService {
 
         if(!result.get().equals(holder)) {
             throw CartTaskException.Items.NOT_CARTITEM_OWNER.value();
+        }
+    }
+    
+    // 카트의 소유주 확인 기능
+    public void checkCartHolder(String holder, Long cno) {
+        CartEntity cartEntity = cartRepository.findByHolder(holder).orElseThrow(CartTaskException.Items.NOT_FOUND_CART::value);
+
+        if(!cartEntity.getCno().equals(cno)) {
+            throw CartTaskException.Items.NOT_FOUND_CART.value();
         }
     }
 }
