@@ -22,7 +22,8 @@ public class CartTaskException extends RuntimeException {
         DUPLICATE_PRODUCT("이미 장바구니에 존재하는 상품입니다.", 400),
         CART_ITEM_REGISTER_FAIL("장바구니 상품 등록에 실패했습니다.", 500),
         CART_ITEM_UPDATE_FAIL("장바구니 상품 수량 변경에 실패했습니다.", 500),
-        CART_ITEM_DELETE_FAIL("장바구니 상품 삭제에 실패했습니다.", 500);
+        CART_ITEM_DELETE_FAIL("장바구니 상품 삭제에 실패했습니다.", 500),
+        NOT_CARTITEM_OWNER("장바구니 상품의 소유자가 아닙니다.", 403);
 
         private String message;
         private int status;
