@@ -26,4 +26,9 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
            " and pi.idx = 0 " +
            " order by c.itemNo desc")
     List<Object[]> getCartItemsOfHolder2(@Param("holder") String holder);
+
+    // 장바구니 소유주 확인 메서드
+    @Query("select c.cart.holder from CartItemEntity c" +
+           " where c.itemNo = :itemNo" )
+    Optional<String> getHolderOfCartItem(@Param("itemNo") Long itemNo);
 }
