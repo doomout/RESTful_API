@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,6 +68,28 @@ public class CartController {
         modifyCartItemDTO.setItemNo(itemNo);
 
         cartService.modifyItem(modifyCartItemDTO);
+
+        List<CartItemDTO> cartList = cartService.getAllItems(mid);
+        
+        return ResponseEntity.ok(cartList);
+    }
+
+    // 장바구니 아이템의 삭제
+    @DeleteMapping("/removeItem/{itemNo}")
+    public ResponseEntity<List<CartItemDTO>> removeItem(
+            @PathVariable("itemNo") Long itemNo, 
+            Principal principal) {
+        log.info("remove item................" + itemNo);
+        String mid = principal.getName(); // 현재 로그인한 사용자의 mid 가져오기
+        cartService.checkCartHolder(mid, itemNo); // 아이템 소유자 확인
+        
+        // 수량을 0으로 만드는 것이 삭제
+        cartService.modifyItem(
+            ModifyCartItemDTO.builder()
+                .itemNo(itemNo)
+                .quantity(0)
+                .build()
+        );
 
         List<CartItemDTO> cartList = cartService.getAllItems(mid);
         
