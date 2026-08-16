@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ex3.khg.cart.dto.AddCartItemDTO;
 import com.ex3.khg.cart.dto.CartItemDTO;
+import com.ex3.khg.cart.dto.ModifyCartItemDTO;
 import com.ex3.khg.cart.service.CartService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -47,8 +50,26 @@ public class CartController {
         cartService.checkCartHolder(mid, cno);
         
         List<CartItemDTO> cartList = cartService.getAllItems(mid);
-        
+
         return ResponseEntity.ok(cartList);
     }
     
+    // 장바구니 아이템의 수정/삭제
+    @PutMapping("/modifyItem/{itemNo}")
+    public ResponseEntity<List<CartItemDTO>> modifyItem(
+            @PathVariable("itemNo") Long itemNo, 
+            @RequestBody ModifyCartItemDTO modifyCartItemDTO, 
+            Principal principal) {
+        log.info("modify item................" + modifyCartItemDTO);
+        String mid = principal.getName(); // 현재 로그인한 사용자의 mid 가져오기
+        cartService.checkCartHolder(mid, itemNo); // 아이템 소유자 확인
+        
+        modifyCartItemDTO.setItemNo(itemNo);
+
+        cartService.modifyItem(modifyCartItemDTO);
+
+        List<CartItemDTO> cartList = cartService.getAllItems(mid);
+        
+        return ResponseEntity.ok(cartList);
+    }
 }
